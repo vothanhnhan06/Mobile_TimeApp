@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="16dp"
+    tools:context=".activity.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Hình ảnh mèo -->
+        <ImageView
+            android:id="@+id/imgCat"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/logincat"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Email -->
+        <EditText
+            android:id="@+id/edtEmail"
+            android:layout_width="330dp"
+            android:layout_height="60dp"
+            android:hint="Email"
+            android:background="@drawable/edittext"
+            android:padding="12dp"
+            android:inputType="textEmailAddress"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Mật khẩu -->
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="330dp"
+            android:layout_height="60dp"
+            android:hint="Mật khẩu"
+            android:background="@drawable/edittext"
+            android:padding="12dp"
+            android:inputType="textPassword"
+            android:drawableEnd="@drawable/eye_close_layout"
+            android:drawablePadding="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Quên mật khẩu -->
+        <TextView
+            android:id="@+id/txtForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quên mật khẩu?"
+            android:textColor="#355E3B"
+            android:textStyle="bold|italic"
+            android:layout_gravity="end"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="15dp"
+            android:autoLink="none"
+            android:textSize="18sp"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- Chưa có tài khoản? Đăng ký -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chưa có tài khoản? "
+                android:textColor="#355E3B"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/txtRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đăng ký"
+                android:textColor="#355E3B"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginStart="4dp"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+
+        <!-- Nút đăng nhập -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/txtLogin"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:text="Đăng nhập"
+            android:textSize="18sp"
+            style="@style/PrimaryButton"
+            android:padding="12dp"
+            android:layout_marginBottom="30dp"/>
+    </LinearLayout>
+</ScrollView>

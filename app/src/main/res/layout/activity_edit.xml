@@ -1,0 +1,109 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btnSaveTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lưu"
+            android:layout_marginEnd="240dp"
+            android:backgroundTint="#355E3B"
+            android:textColor="@android:color/white"
+            android:layout_gravity="start" />
+
+        <ImageView
+            android:id="@+id/btnCloseEdit"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@android:color/transparent"
+            android:contentDescription="Đóng"
+            android:src="@drawable/ic_close"
+            app:tint="#355E3B"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Hours -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp">
+
+            <NumberPicker
+                android:id="@+id/pickerHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hours"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <!-- Minutes -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp">
+
+            <NumberPicker
+                android:id="@+id/pickerMinutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="min."
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+        <!-- Seconds -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <NumberPicker
+                android:id="@+id/pickerSeconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sec."
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

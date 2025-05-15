@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/welcomeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="24dp"
+    android:background="#FFFFFF"
+    tools:context=".activity.WelcomeActivity">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chào mừng đến với\nTimer App"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#355E3B"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="50dp" />
+
+    <!-- Phụ đề -->
+
+    <!-- Hình ảnh đồng hồ cát -->
+    <TextView
+        android:id="@+id/subText"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:text="Hãy cùng nhau tạo một chiếc hộp thời gian đếm ngược nào!"
+        android:textColor="#355E3B"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+
+    <ImageView
+        android:id="@+id/hourglassImage"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:src="@drawable/hourglass"
+        android:layout_marginBottom="60dp"
+        android:contentDescription="Đồng hồ cát" />
+
+    <!-- Nút Tiếp theo -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/button_next"
+        android:paddingLeft="40dp"
+        android:paddingTop="12dp"
+        android:paddingRight="40dp"
+        android:paddingBottom="12dp"
+        android:text="Tiếp theo"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:textColor="#91B526"/>
+</LinearLayout>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="30dp"
+            android:text="Timer App"
+            android:textColor="#355E3B"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="30dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_primary"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đọc sách"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" thôi nào!"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center">
+
+
+        <!-- Ảnh sách nằm chính giữa, nhỏ hơn vòng -->
+        <ImageView
+            android:id="@+id/imgTask"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/book" />
+
+        <FrameLayout
+            android:id="@+id/circleContainer"
+            android:layout_width="236dp"
+            android:layout_height="236dp"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/btnPause"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="-25dp"
+        android:background="@drawable/bg_circle_outline"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_pause"
+        app:tint="#AF553A" />
+
+    <TextView
+        android:id="@+id/txtTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        android:textColor="#355E3B"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="70dp"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_back"
+            android:background="@drawable/bg_circle_outline"
+            android:layout_margin="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:tint="#A44D27" />
+
+        <ImageButton
+            android:id="@+id/btnEdit"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_edit"
+            android:background="@drawable/bg_circle_outline"
+            android:layout_margin="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:tint="#AF553A" />
+
+        <ImageButton
+            android:id="@+id/btnReset"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_reset"
+            android:background="@drawable/bg_circle_outline"
+            android:layout_margin="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:tint="#A44D27" />
+    </LinearLayout>
+</LinearLayout>

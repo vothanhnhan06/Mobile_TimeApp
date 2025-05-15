@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_back"
+            app:tint="#355E3B"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="start"/>
+
+        <include layout="@layout/drawer_header" />
+
+        <!-- Email -->
+        <TextView android:text="Email"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="18sp"/>
+        <EditText
+            android:id="@+id/edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="AmyYoung@gmail.com"
+            android:enabled="false"
+            android:background="@android:color/transparent"
+            android:textColorHint="#888888" />
+
+        <!-- Username -->
+        <TextView android:text="Tên đăng nhập"
+            android:id="@+id/tvUsername"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"/>
+        <EditText
+            android:id="@+id/edtUsername"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="AmyYoung"
+            android:textColorHint="@color/black" />
+
+        <!-- Current password -->
+        <TextView android:text="Mật khẩu hiện tại"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:textSize="18sp"/>
+        <EditText
+            android:id="@+id/edtCurrentPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="textPassword"
+            android:hint="***********" />
+
+        <!-- New password -->
+        <TextView android:text="Mật khẩu mới"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"/>
+        <EditText
+            android:id="@+id/edtNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="textPassword"
+            android:hint="***********" />
+
+        <!-- Save button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSaveChanges"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Lưu thay đổi"
+            android:layout_gravity="start"
+            style="@style/PrimaryButton"/>
+    </LinearLayout>
+</ScrollView>

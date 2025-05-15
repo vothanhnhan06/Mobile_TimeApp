@@ -1,0 +1,36 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:gravity="center_vertical">
+
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/avatarImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/logincat"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            app:strokeColor="#355E3B"
+            app:strokeWidth="2dp"
+            android:padding="2dp"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvUserNameHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="Tên người dùng"
+        android:textColor="#355E3B"
+        android:textSize="18sp"
+        android:gravity="center_vertical" />
+</LinearLayout>

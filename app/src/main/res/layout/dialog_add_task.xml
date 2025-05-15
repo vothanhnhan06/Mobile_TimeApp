@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_add">
+
+    <ImageView
+        android:id="@+id/imgClose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_close"
+        android:layout_marginRight="15dp"
+        android:layout_gravity="right"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:focusable="true"
+        app:tint="#355E3B" />
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Tên hoạt động"
+        android:textStyle="bold"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/edtTaskName"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:paddingStart="8dp"
+        android:background="@drawable/edittext"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Thời gian"
+        android:textStyle="bold"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/edtTime"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:hint="00:00:00"
+        android:paddingStart="8dp"
+        android:background="@drawable/edittext"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thêm vào yêu thích"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_weight="1" />
+
+        <CheckBox
+            android:id="@+id/checkFavorite"
+            android:buttonTint="#355E3B"
+            android:layout_height="30dp"
+            android:layout_width="30dp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#355E3B"
+        android:text="Lưu"
+        android:layout_marginRight="55dp"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+</LinearLayout>
