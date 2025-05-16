@@ -21,4 +21,18 @@ public interface ApiTimeApp {
             @Field("email") String email,
             @Field("password") String pass
     );
+
+    @FormUrlEncoded
+    @POST("sendEmail.php")
+    Single<UserModel> sendEmail(
+            @Field("email") String email,
+            @Field("code") String code
+    );
+
+    @FormUrlEncoded
+    @POST("checkOTP.php")
+    Single<UserModel> checkOTP(
+            @Field("email") String email,
+            @Field("code") String code
+    );
 }
