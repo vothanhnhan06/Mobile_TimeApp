@@ -2,8 +2,6 @@ package com.example.timerapp.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.InputType;
@@ -13,8 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.app.AlertDialog;
-import android.os.Handler;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -90,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                             // Xử lý khi API thành công
                             Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
                             // Chuyển sang OTPconfirm Activity chỉ khi API thành công
-                            Intent intent = new Intent(RegisterActivity.this, OTPconfirm.class);
+                            Intent intent = new Intent(RegisterActivity.this, OTPconfirmRegister.class);
                             intent.putExtra("email", str_email);
                             startActivity(intent);
                             finish();

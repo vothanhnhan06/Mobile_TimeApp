@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ForgotPasswordActivity" />
-        <activity android:name=".activity.OTPconfirm" />
+        <activity android:name=".activity.OTPconfirmRegister" />
+        <activity android:name=".activity.OTPconfirmReset" />
         <activity android:name=".activity.WelcomeActivity" />
         <activity android:name=".activity.ConfirmationActivity" />
         <activity android:name=".activity.ChangePasswordActivity" />

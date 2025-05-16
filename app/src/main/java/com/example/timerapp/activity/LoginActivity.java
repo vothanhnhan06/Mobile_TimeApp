@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //Forgot password
-        /*
+
         txtForgot.setPaintFlags(txtForgot.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         txtForgot.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        });*/
+        });
 
         //Register
         txtRegister.setPaintFlags(txtRegister.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -101,26 +101,34 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(checkInput()){
-                    String str_email= edtEmail.getText().toString();
-                    String str_pass=edtPassword.getText().toString();
-                    compositeDisposable.add(apiTimeApp.login(str_email,str_pass)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                   userModel -> {
-                                       if(userModel.isSuccess()){
-                                           Utils.user_current=userModel.getResult().get(0);
-                                           Intent intent=new Intent(getApplicationContext(),HomeActivity.class );
-                                           startActivity(intent);
-                                       }
-                                       else{
-                                           Toast.makeText(LoginActivity.this, "Lỗi đăng nhập", Toast.LENGTH_SHORT).show();
-                                       }
-                                   }
-                            ));
+                    loginUser();
                 }
             }
         });
+    }
+
+    private void loginUser() {
+        String str_email= edtEmail.getText().toString();
+        String str_pass=edtPassword.getText().toString();
+        compositeDisposable.add(apiTimeApp.login(str_email,str_pass)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        userModel -> {
+                            if(userModel.isSuccess()){
+                                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+                                Utils.user_current=userModel.getResult().get(0);
+                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                            }
+                        }, throwable -> {
+                            Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 
     private boolean checkInput() {
