@@ -51,7 +51,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         edtEmailForgot=findViewById(R.id.edtEmailForgot);
         btnSendReset.setOnClickListener(v -> {
             String email=edtEmailForgot.getText().toString().trim();
-            sendVerifyEmail(email);
+
+            //sendVerifyEmail(email);
+            Intent intent = new Intent(ForgotPasswordActivity.this, OTPconfirmReset.class);
+            intent.putExtra("email", email);
+            intent.putExtra("code", code);
+            startActivity(intent);
             finish();
         });
     }
