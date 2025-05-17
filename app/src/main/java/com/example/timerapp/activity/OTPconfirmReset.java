@@ -1,5 +1,6 @@
 package com.example.timerapp.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -13,6 +14,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.timerapp.R;
+import com.example.timerapp.retrofit.ApiTimeApp;
+import com.example.timerapp.retrofit.RetrofitClient;
+import com.example.timerapp.utils.Utils;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class OTPconfirmReset extends AppCompatActivity {
@@ -23,31 +31,33 @@ public class OTPconfirmReset extends AppCompatActivity {
     private boolean resendEnable =false;
     private int resendTime=60;
 
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
+    ApiTimeApp apiTimeApp;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.otp_confirm_reset);
+        apiTimeApp= RetrofitClient.getInstance(Utils.BASE_URL).create(ApiTimeApp.class);
 
         btnSendAgain=findViewById(R.id.btnSendAgain);
         emailSend=findViewById(R.id.txtEmail);
-        otp=findViewById(R.id.edtOTP);
-
         //Lay email tu man hinh dang ky
-        String email=getIntent().getStringExtra("email");
+        String str_email=getIntent().getStringExtra("email");
 
 
         //Hien thi ten email
-        emailSend.setText(email);
+        emailSend.setText(str_email);
 
         //confirm
         btnConfirm=findViewById(R.id.btnComfirm);
         otp=findViewById(R.id.edtOTP);
+
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkCode()){
-
-                }
+                String str_otp=otp.getText().toString().trim();
+                checkCode(str_email,str_otp);
             }
         });
 
@@ -66,17 +76,28 @@ public class OTPconfirmReset extends AppCompatActivity {
         });
     }
 
-    private boolean checkCode() {
-        String str_otp=otp.getText().toString().trim();
-        String code=getIntent().getStringExtra("code");
-        if(str_otp.equals(code)){
-            Toast.makeText(getApplicationContext(),"Ma code dung!", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"Ma code dung!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+    private void checkCode(String email,String str_otp) {
+        compositeDisposable.add(apiTimeApp.checkOTP(email,str_otp)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        userModel -> {
+                            if(userModel.isSuccess()){
+                                Toast.makeText(getApplicationContext(),"Success" , Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(OTPconfirmReset.this, ChangePasswordActivity.class);
+                                intent.putExtra("email",email);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else{
+                                otp.setBackgroundResource(R.drawable.red_edittex);
+                                otp.requestFocus();
+                                Toast.makeText(getApplicationContext(),"Error"+userModel.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }, throwable -> {
+                            Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 
     private void startCountTimer(){
