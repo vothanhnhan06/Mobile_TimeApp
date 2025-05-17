@@ -1,4 +1,4 @@
-package com.example.timerapp.fragment;
+package com.example.timerapp.activity;
 
 import android.content.Intent;
 import android.graphics.Color;

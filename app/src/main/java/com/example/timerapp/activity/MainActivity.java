@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             headerLayout.setVisibility(View.VISIBLE);
             Toast.makeText(this, "Bấm Favourite", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_personal) {
-            selectedFragment = new com.example.timerapp.fragment.ProfileActivity();
+            selectedFragment = new ProfileActivity();
             headerLayout.setVisibility(View.GONE);
         }
 

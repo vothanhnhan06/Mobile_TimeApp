@@ -28,15 +28,19 @@
         <activity android:name=".activity.ForgotPasswordActivity" />
         <activity android:name=".activity.OTPconfirmRegister" />
         <activity android:name=".activity.OTPconfirmReset" />
-        <activity android:name=".activity.WelcomeActivity" />
         <activity android:name=".activity.ConfirmationActivity" />
         <activity android:name=".activity.ChangePasswordActivity" />
-        <activity android:name=".activity.HomeActivity" />
+        <activity android:name=".activity.HomeActivity"
+            tools:ignore="Instantiatable" />
         <activity android:name=".activity.CountTimerActivity" />
-        <activity android:name=".activity.ProfileActivity" />
-        <activity android:name=".activity.FavouriteActivity" />
-        <activity android:name=".activity.LibraryActivity" />
+        <activity android:name=".activity.ProfileActivity"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".activity.FavoriteActivity"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".activity.LibraryActivity"
+            tools:ignore="Instantiatable" />
         <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

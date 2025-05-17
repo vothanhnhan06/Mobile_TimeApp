@@ -39,6 +39,8 @@ public class HomeActivity extends Fragment {
         taskList.add(new Task("Đọc sách", "01:00:00", false));
         taskAdapter.notifyDataSetChanged();
 
+
+
         return view;
     }
 }

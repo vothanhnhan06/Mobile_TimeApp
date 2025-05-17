@@ -20,6 +20,8 @@ import com.example.timerapp.retrofit.ApiTimeApp;
 import com.example.timerapp.retrofit.RetrofitClient;
 import com.example.timerapp.utils.Utils;
 
+import java.util.Random;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -72,29 +74,55 @@ public class RegisterActivity extends AppCompatActivity {
             finish();
         });
     }
+    private void sendEmail(String str_email){
+        Random random = new Random();
+        int code = random.nextInt(8999) + 1000;
+        String codeStr = String.valueOf(code);
+
+        compositeDisposable.add(apiTimeApp.sendEmail(str_email,codeStr)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        userModel -> {
+                            if(userModel.isSuccess()){
+                                Intent intent = new Intent(RegisterActivity.this, OTPconfirmRegister.class);
+                                intent.putExtra("email", str_email);
+                                intent.putExtra("code", codeStr);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),userModel.getMessage() , Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            // Xử lý khi API thất bại
+                            Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                )
+        );
+    }
 
     private void registerUser() {
         String str_email = email.getText().toString().trim();
         String str_username = username.getText().toString().trim();
         String str_pass = pass.getText().toString().trim();
 
-        compositeDisposable.add(apiTimeApp.register(str_email, str_username, str_pass)
+        compositeDisposable.add(apiTimeApp.register(str_email,str_username,str_pass)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        response -> {
-                            // Xử lý khi API thành công
-                            Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                            // Chuyển sang OTPconfirm Activity chỉ khi API thành công
-                            Intent intent = new Intent(RegisterActivity.this, OTPconfirmRegister.class);
-                            intent.putExtra("email", str_email);
-                            startActivity(intent);
-                            finish();
+                        userModel -> {
+                            if(userModel.isSuccess()){
+                                sendEmail(str_email);
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),userModel.getMessage() , Toast.LENGTH_SHORT).show();
+                            }
                         },
                         throwable -> {
                             // Xử lý khi API thất bại
-                            Toast.makeText(RegisterActivity.this, "Lỗi đăng ký: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e("RegisterActivity", "Lỗi API: ", throwable);
+                            Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                 )
         );

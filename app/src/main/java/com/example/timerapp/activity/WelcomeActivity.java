@@ -38,7 +38,6 @@ public class WelcomeActivity extends AppCompatActivity {
         }
         Button nextButton = findViewById(R.id.nextButton);
         nextButton.setOnClickListener(v -> {
-
             Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
