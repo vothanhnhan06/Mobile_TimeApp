@@ -18,7 +18,7 @@ import com.example.timerapp.TaskAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeActivity extends Fragment {
 
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_homepage, container, false);
+        View view = inflater.inflate(R.layout.activity_home, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerViewTasks);
 

@@ -65,6 +65,7 @@
             android:background="@drawable/edittext"
             android:padding="12dp"
             android:inputType="textPassword"
+            android:drawableEnd="@drawable/eye_close_layout"
             android:layout_marginBottom="8dp" />
 
 

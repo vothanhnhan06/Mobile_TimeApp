@@ -8,8 +8,8 @@
     android:gravity="center">
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="200dp"
+        android:layout_width="220dp"
+        android:layout_height="213dp"
         android:layout_gravity="top|center"
         android:layout_marginBottom="30dp"
         android:src="@drawable/otp" />
@@ -51,7 +51,7 @@
         android:background="@drawable/edittext"
         android:layout_marginBottom="16dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnComfirm"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
