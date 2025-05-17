@@ -35,4 +35,11 @@ public interface ApiTimeApp {
             @Field("email") String email,
             @Field("code") String code
     );
+
+    @FormUrlEncoded
+    @POST("resetPass.php")
+    Single<UserModel> resetPass(
+            @Field("email") String email,
+            @Field("password") String password
+    );
 }
