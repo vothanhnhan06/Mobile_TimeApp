@@ -1,155 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawerLayout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:layout_height="match_parent">
 
-    <!-- Nội dung chính của màn hình -->
-    <LinearLayout
+    <!-- Nếu bạn có toolbar riêng cho fragment, giữ hoặc loại bỏ tùy design -->
+
+
+    <!-- Nội dung chính của thư viện -->
+    <!-- Ví dụ là 1 RecyclerView hoặc các UI khác -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewLibrary"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:background="#000000" />
-
-        <!-- Toolbar -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:background="#FFFFFF"
-            android:elevation="4dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:id="@+id/imgMenu"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_menu"
-                    card_view:tint="#355E3B"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless" />
-
-                <TextView
-                    android:id="@+id/txtUserName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingStart="8dp"
-                    android:text="Tên người dùng1"
-                    android:textColor="#355E3B"
-                    android:textSize="18sp" />
-
-                <ImageView
-                    android:id="@+id/imgSearch"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_search"
-                    card_view:tint="#355E3B"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless" />
-
-                <ImageView
-                    android:id="@+id/imgAdd"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_add"
-                    card_view:tint="#355E3B"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless" />
-            </LinearLayout>
-        </androidx.appcompat.widget.Toolbar>
-
-        <!-- Ô tìm kiếm -->
-        <EditText
-            android:id="@+id/searchBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nhập từ khóa tìm kiếm..."
-            android:padding="12dp"
-            android:drawableLeft="@drawable/ic_search"
-            android:layout_margin="10dp"
-            android:visibility="gone"
-            android:backgroundTint="#355E3B"
-            android:textColor="#000000"
-            android:drawableTint="#355E3B"
-            android:textColorHint="#888888"/>
+    <!-- Bottom Navigation hoặc các nút thao tác ở dưới cùng -->
 
 
-
-        <!-- Danh sách nhiệm vụ -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewTasks"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:clipToPadding="false"/>
-    </LinearLayout>
-
-
-    <!-- Menu Drawer -->
-    <LinearLayout
-        android:id="@+id/navigationLayout"
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#FFFFFF"
-        android:orientation="vertical"
-        android:fitsSystemWindows="true">
-
-        <!-- Header -->
-        <include layout="@layout/drawer_header" />
-
-        <!-- Menu chính -->
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:menu="@menu/drawer_menu"
-            android:background="#FFFFFF"
-            app:itemVerticalPadding="12dp"
-            style="@style/NavigationViewStyle"/>
-
-        <!-- Nút Đăng xuất -->
-        <TextView
-            android:id="@+id/tvLogout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            android:text="Đăng xuất"
-            android:drawableTint="@color/red"
-            android:textColor="@color/red"
-            android:textSize="16sp"
-            android:drawableLeft="@drawable/ic_logout"
-            android:drawablePadding="10dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"/>
-    </LinearLayout>
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</LinearLayout>

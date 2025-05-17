@@ -46,10 +46,10 @@
             card_view:tint="#FFFFFF" />
 
         <ImageView
-            android:id="@+id/imgMore"
+            android:id="@+id/imgDelete"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@drawable/ic_more_vert"
+            android:src="@drawable/ic_delete"
             card_view:tint="#FFFFFF" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

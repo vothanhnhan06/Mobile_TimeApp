@@ -31,11 +31,8 @@
         <activity android:name=".activity.WelcomeActivity" />
         <activity android:name=".activity.ConfirmationActivity" />
         <activity android:name=".activity.ChangePasswordActivity" />
-        <activity android:name=".activity.HomeActivity" />
+        <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.CountTimerActivity" />
-        <activity android:name=".activity.ProfileActivity" />
-        <activity android:name=".activity.FavouriteActivity" />
-        <activity android:name=".activity.LibraryActivity" />
         <activity android:name=".activity.RegisterActivity" />
     </application>
 

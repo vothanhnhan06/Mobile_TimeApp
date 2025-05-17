@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.timerapp.R;
 
-public class FavoriteFragment extends Fragment {
+public class FavoriteActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

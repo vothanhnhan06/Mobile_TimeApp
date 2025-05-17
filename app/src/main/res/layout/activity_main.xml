@@ -1,11 +1,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!-- Header -->
-    <include layout="@layout/header_toolbar" />
-
+    <include
+        android:id="@+id/headerLayout"
+        layout="@layout/header_toolbar" />
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search"
+        android:padding="8dp"
+        android:background="@drawable/search_bar_bg"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:drawableTint="#355E3B"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:visibility="gone" />
     <!-- Nội dung động -->
     <FrameLayout
         android:id="@+id/content_frame"
