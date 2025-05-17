@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.timerapp.R;
 
-public class LibraryFragment extends Fragment {
+public class FavoriteFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate layout: activity_library.xml → đổi tên thành fragment_library.xml để đúng ngữ nghĩa
-        return inflater.inflate(R.layout.activity_library, container, false);
+        // Inflate layout: đổi tên layout thành fragment_favorite.xml
+        return inflater.inflate(R.layout.activity_favourite, container, false);
     }
 }
