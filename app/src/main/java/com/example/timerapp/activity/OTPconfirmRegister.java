@@ -51,7 +51,6 @@ public class OTPconfirmRegister extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (resendEnable) {
-                    Toast.makeText(getApplicationContext(), "Gửi lại mã OTP", Toast.LENGTH_SHORT).show();
                     sendEmail(email);
                 } else {
                     Toast.makeText(getApplicationContext(), "Vui lòng đợi để gửi lại mã", Toast.LENGTH_SHORT).show();
@@ -127,7 +126,7 @@ public class OTPconfirmRegister extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), userModel.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }, throwable -> {
-                            Toast.makeText(getApplicationContext(), "Error: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),throwable.getMessage(), Toast.LENGTH_LONG).show();
                         }
                 )
         );

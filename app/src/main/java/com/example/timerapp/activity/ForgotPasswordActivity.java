@@ -76,7 +76,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 .subscribe(
                         userModel -> {
                             if(userModel.isSuccess()){
-                                Toast.makeText(getApplicationContext(),"Success"+codeStr , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"Success", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(ForgotPasswordActivity.this, OTPconfirmReset.class);
                                 intent.putExtra("email",email);
                                 intent.putExtra("code",codeStr);

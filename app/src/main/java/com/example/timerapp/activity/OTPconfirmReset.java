@@ -69,7 +69,6 @@ public class OTPconfirmReset extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (resendEnable) {
-                    Toast.makeText(getApplicationContext(), "Gửi lại mã OTP", Toast.LENGTH_SHORT).show();
                     sendEmail(str_email);
                 } else {
                     Toast.makeText(getApplicationContext(), "Vui lòng đợi để gửi lại mã", Toast.LENGTH_SHORT).show();
