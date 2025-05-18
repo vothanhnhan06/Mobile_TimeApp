@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Xử lý nút add task
         imgAdd.setOnClickListener(v -> {
-            // Bạn có thể chuyển phần mở dialog thêm task ở đây
+
             showAddTaskDialog();
         });
     }
