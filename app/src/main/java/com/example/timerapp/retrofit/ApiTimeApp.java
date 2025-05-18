@@ -42,4 +42,19 @@ public interface ApiTimeApp {
             @Field("email") String email,
             @Field("password") String password
     );
+
+    @FormUrlEncoded
+    @POST("getTask.php")
+    Single<UserModel> getTask(
+            @Field("user_id") String user_id
+    );
+
+    @FormUrlEncoded
+    @POST("resetPassProfile.php")
+    Single<UserModel> resetPassProfile(
+            @Field("email") String email,
+            @Field("password") String password,
+            @Field("old_password") String old_password,
+            @Field("username") String username
+    );
 }

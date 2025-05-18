@@ -7,6 +7,16 @@ public class UserModel {
     String message;
     List<User> result;
 
+    public UserModel(boolean success, List<User> result,String message) {
+        this.success = success;
+        this.message = message;
+        this.result = result;
+    }
+
+    public UserModel(){
+
+    }
+
     public boolean isSuccess(){
         return success;
     }

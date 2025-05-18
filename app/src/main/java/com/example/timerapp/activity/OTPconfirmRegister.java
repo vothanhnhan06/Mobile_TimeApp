@@ -94,7 +94,7 @@ public class OTPconfirmRegister extends AppCompatActivity {
                 .subscribe(
                         userModel -> {
                             if (userModel.isSuccess()) {
-                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), userModel.getMessage(), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(OTPconfirmRegister.this, LoginActivity.class);
                                 startActivity(intent);
                                 finish();

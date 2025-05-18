@@ -3,12 +3,22 @@ package com.example.timerapp.model;
 public class User {
     String email;
     String pass;
-    String usernam;
+    String name;
+    String image_path;
 
-    public User(String email, String pass, String usernam) {
+    public User(String email, String pass, String name, String image_path) {
         this.email = email;
         this.pass = pass;
-        this.usernam = usernam;
+        this.name = name;
+        this.image_path=image_path;
+    }
+
+    public String getImage_path() {
+        return image_path;
+    }
+
+    public void setImage_path(String image_path) {
+        this.image_path = image_path;
     }
 
     public User() {
@@ -23,9 +33,8 @@ public class User {
         return pass;
     }
 
-    public String getUsernam() {
-
-        return usernam;
+    public String getUsername() {
+        return name;
     }
 
     public void setEmail(String email) {
@@ -36,7 +45,7 @@ public class User {
         this.pass = pass;
     }
 
-    public void setUsernam(String usernam) {
-        this.usernam = usernam;
+    public void setUsernam(String username) {
+        this.name = username;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.timerapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,13 +20,23 @@ import androidx.fragment.app.Fragment;
 
 import com.example.timerapp.R;
 import com.example.timerapp.activity.LoginActivity;
+import com.example.timerapp.retrofit.ApiTimeApp;
+import com.example.timerapp.retrofit.RetrofitClient;
+import com.example.timerapp.utils.Utils;
+
+import io.paperdb.Paper;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ProfileActivity extends Fragment {
 
-    private TextView tvUsername;
+    private TextView tvUsernameHeader;
     private EditText edtEmail, edtUsername, edtCurrentPassword, edtNewPassword;
     private Button btnSaveChanges;
     private LinearLayout btnLogout;
+    ApiTimeApp apiTimeApp;
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
 
     @Nullable
     @Override
@@ -34,8 +45,10 @@ public class ProfileActivity extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_profile, container, false);
 
+        apiTimeApp= RetrofitClient.getInstance(Utils.BASE_URL).create(ApiTimeApp.class);
         // Ánh xạ view
-        tvUsername = view.findViewById(R.id.tvUsername);
+
+        tvUsernameHeader = view.findViewById(R.id.tvUserNameHeader);
         edtEmail = view.findViewById(R.id.edtEmail);
         edtUsername = view.findViewById(R.id.edtUsername);
         edtCurrentPassword = view.findViewById(R.id.edtCurrentPassword);
@@ -44,19 +57,62 @@ public class ProfileActivity extends Fragment {
         btnLogout = view.findViewById(R.id.btnLogout);
 
         // Gán dữ liệu mẫu
-        tvUsername.setText("Amy Young");
-        edtEmail.setText("AmyYoung@gmail.com");
-        edtUsername.setText("Amy Young");
+        tvUsernameHeader.setText(Utils.user_current.getUsername());
+        edtEmail.setText(Utils.user_current.getEmail());
+        edtUsername.setText(Utils.user_current.getUsername());
+
+        // Xử lý khi edtUsername mất focus
+        edtUsername.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String input = edtUsername.getText().toString().trim();
+                if (input.isEmpty() && Utils.user_current != null) {
+                    String originalUsername = Utils.user_current.getUsername() != null ? Utils.user_current.getUsername() : "Người dùng";
+                    edtUsername.setText(originalUsername);
+                }
+            }
+        });
 
         // Xử lý lưu
         btnSaveChanges.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Thay đổi đã được lưu", Toast.LENGTH_SHORT).show();
+            resetPass();
         });
 
         //Xử  lý đăng xuất
         btnLogout.setOnClickListener(v -> showLogoutConfirmationDialog());
         return view;
     }
+
+    private void resetPass() {
+        String str_email= edtEmail.getText().toString();
+        String str_username=edtUsername.getText().toString().trim();
+        String str_pass=edtNewPassword.getText().toString();
+        String str_oldpass=edtCurrentPassword.getText().toString();
+        compositeDisposable.add(apiTimeApp.resetPassProfile(str_email,str_pass,str_oldpass,str_username)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        userModel -> {
+                            if(userModel.isSuccess()){
+                                Toast.makeText(getContext(), userModel.getMessage(), Toast.LENGTH_SHORT).show();
+                                tvUsernameHeader.setText(str_username);
+
+                                edtNewPassword.getText().clear();
+                                edtCurrentPassword.getText().clear();
+                            }
+                            else{
+                                Toast.makeText(getContext(), userModel.getMessage(), Toast.LENGTH_SHORT).show();
+                                edtNewPassword.getText().clear();
+                                edtCurrentPassword.getText().clear();
+
+                                edtNewPassword.requestFocus();
+                            }
+                        }, throwable -> {
+                            Toast.makeText(getContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                ));
+    }
+
+
     private void showLogoutConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -88,7 +144,5 @@ public class ProfileActivity extends Fragment {
             negativeButton.setAllCaps(false);  //
         }
     }
-
-
 
 }
