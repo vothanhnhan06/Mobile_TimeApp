@@ -1,4 +1,4 @@
-package com.example.timerapp;
+package com.example.timerapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,8 +15,9 @@ import androidx.core.content.ContextCompat;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timerapp.R;
 import com.example.timerapp.activity.CountTimerActivity;
-import com.example.timerapp.activity.LoginActivity;
+import com.example.timerapp.model.Task;
 
 import java.util.List;
 
@@ -28,6 +29,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public TaskAdapter(Context context, List<Task> taskList) {
         this.context = context;
         this.taskList = taskList;
+    }
+
+    public TaskAdapter(){
+        
     }
 
     @NonNull
