@@ -33,6 +33,7 @@ import java.net.NetworkInterface;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.paperdb.Paper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -116,6 +117,8 @@ public class LoginActivity extends AppCompatActivity {
                 .subscribe(
                         userModel -> {
                             if(userModel.isSuccess()){
+                                Paper.book().write("email",str_email);
+                                Paper.book().write("pass",str_pass);
                                 Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
                                 Utils.user_current=userModel.getResult().get(0);
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -165,12 +168,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initView(){
+        Paper.init(this);
         apiTimeApp= RetrofitClient.getInstance(Utils.BASE_URL).create(ApiTimeApp.class);
         edtPassword=findViewById(R.id.edtPassword);
         txtRegister = findViewById(R.id.txtRegister);
         txtLogin = findViewById(R.id.txtLogin);
         edtEmail=findViewById(R.id.edtEmail);
         txtForgot = findViewById(R.id.txtForgotPassword);
+
+        if(Paper.book().read("email")!=null &&Paper.book().read("pass")!=null){
+            edtEmail.setText(Paper.book().read("email"));
+            edtPassword.setText(Paper.book().read("pass"));
+        }
     }
 
     @Override

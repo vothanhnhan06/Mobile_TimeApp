@@ -47,5 +47,6 @@ dependencies {
     implementation ("io.reactivex.rxjava3:rxjava:3.0.0")
     implementation ("com.squareup.okhttp3:okhttp:4.12.0")// Latest as of 2024
     implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation ("io.github.pilgr:paperdb:2.7.2")
 
 }
