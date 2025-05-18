@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timerapp.R;
+import com.example.timerapp.utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -31,19 +32,23 @@ public class MainActivity extends AppCompatActivity {
     private View headerLayout;
     private EditText searchBar;
     private ImageView imgAdd, imgSearch;
+    private TextView txtUserName;
     private boolean isSearchVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        headerLayout = findViewById(R.id.headerLayout);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        init();
 
 
-        searchBar = findViewById(R.id.searchBar);
-        imgAdd = headerLayout.findViewById(R.id.imgAdd);
-        imgSearch = findViewById(R.id.imgSearch);
+        //Load username
+        if (Utils.user_current != null) {
+            String userName = Utils.user_current.getUsername();
+            txtUserName.setText(userName);
+        } else {
+            Toast.makeText(this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+        }
 
         // Load HomeFragment mặc định
         if (savedInstanceState == null) {
@@ -137,6 +142,15 @@ public class MainActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    private void init(){
+        headerLayout = findViewById(R.id.headerLayout);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        searchBar = findViewById(R.id.searchBar);
+        imgAdd = headerLayout.findViewById(R.id.imgAdd);
+        imgSearch = findViewById(R.id.imgSearch);
+        txtUserName = findViewById(R.id.txtUserName);
     }
 }
 

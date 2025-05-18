@@ -119,14 +119,15 @@ public class LoginActivity extends AppCompatActivity {
                             if(userModel.isSuccess()){
                                 Paper.book().write("email",str_email);
                                 Paper.book().write("pass",str_pass);
-                                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
                                 Utils.user_current=userModel.getResult().get(0);
+                                Toast.makeText(getApplicationContext(), userModel.getMessage(), Toast.LENGTH_SHORT).show();
+
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             }
                             else{
-                                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), userModel.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }, throwable -> {
                             Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();

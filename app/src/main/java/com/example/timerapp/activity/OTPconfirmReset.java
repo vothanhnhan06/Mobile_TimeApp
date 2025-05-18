@@ -84,7 +84,7 @@ public class OTPconfirmReset extends AppCompatActivity {
                 .subscribe(
                         userModel -> {
                             if(userModel.isSuccess()){
-                                Toast.makeText(getApplicationContext(),"Success" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),userModel.getMessage() , Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(OTPconfirmReset.this, ChangePasswordActivity.class);
                                 intent.putExtra("email",email);
                                 startActivity(intent);
@@ -93,7 +93,7 @@ public class OTPconfirmReset extends AppCompatActivity {
                             else{
                                 otp.setBackgroundResource(R.drawable.red_edittex);
                                 otp.requestFocus();
-                                Toast.makeText(getApplicationContext(),"Error"+userModel.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),userModel.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }, throwable -> {
                             Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();

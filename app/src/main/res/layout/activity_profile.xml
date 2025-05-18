@@ -44,7 +44,7 @@
             android:id="@+id/edtUsername"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="AmyYoung"
+            android:hint="Tên đăng nhập"
             android:textColorHint="@color/black" />
 
         <!-- Current password -->
