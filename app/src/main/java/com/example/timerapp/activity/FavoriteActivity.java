@@ -29,24 +29,20 @@ public class FavoriteActivity extends Fragment {
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
     private List<Task> taskList;
-
     ApiTimeApp apiTimeApp;
     CompositeDisposable compositeDisposable=new CompositeDisposable();
-
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_favourite, container, false);
         apiTimeApp = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiTimeApp.class);
 
         recyclerView = view.findViewById(R.id.recyclerViewLibrary);
-
+        taskList=new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        taskList = new ArrayList<>();
         taskAdapter = new TaskAdapter(getContext(), taskList);
         recyclerView.setAdapter(taskAdapter);
-
-
-        getTaskFavorite(taskList,taskAdapter);
+        getTaskFavorite(taskList, taskAdapter);
         return view;
     }
 
@@ -61,8 +57,7 @@ public class FavoriteActivity extends Fragment {
                                 taskList.clear();
                                 taskList.addAll(taskModel.getResult());
                                 taskAdapter.notifyDataSetChanged();
-                            } else {
-                                Toast.makeText(requireContext(), taskModel.getMessage(), Toast.LENGTH_SHORT).show();
+
                             }
                         }, throwable -> {
                             Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();

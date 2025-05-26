@@ -3,6 +3,7 @@ package com.example.timerapp.retrofit;
 import com.example.timerapp.model.UserModel;
 import com.example.timerapp.model.taskModel;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single; // Switch to Single for a single response
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -58,6 +59,12 @@ public interface ApiTimeApp {
     );
 
     @FormUrlEncoded
+    @POST("deleteTask.php")
+    Single<taskModel> deleteTask(
+            @Field("task_id") int task_id
+    );
+
+    @FormUrlEncoded
     @POST("resetPassProfile.php")
     Single<UserModel> resetPassProfile(
             @Field("email") String email,
@@ -65,4 +72,12 @@ public interface ApiTimeApp {
             @Field("old_password") String old_password,
             @Field("username") String username
     );
+
+    @FormUrlEncoded
+    @POST("updateFavoriteTask.php")
+    Observable<taskModel> updateFavorite(
+            @Field("task_id") int taskId,
+            @Field("is_favorite") int isFavorite
+    );
+
 }

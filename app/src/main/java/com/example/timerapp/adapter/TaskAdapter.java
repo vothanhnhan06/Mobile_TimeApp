@@ -19,13 +19,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.timerapp.R;
 import com.example.timerapp.activity.CountTimerActivity;
 import com.example.timerapp.model.Task;
+import com.example.timerapp.retrofit.ApiTimeApp;
+import com.example.timerapp.retrofit.RetrofitClient;
+import com.example.timerapp.utils.Utils;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private List<Task> taskList;
     private Context context;
+    ApiTimeApp apiTimeApp;
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
     public TaskAdapter(Context context, List<Task> taskList) {
         this.context = context;
         this.taskList = taskList;
@@ -39,6 +48,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.activity_task, parent, false);
+
+
         return new TaskViewHolder(view);
     }
 
@@ -59,10 +70,23 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.imgBookmark.setOnClickListener(v -> {
             boolean isFavorite = !task.isFavorite();
             task.setFavorite(isFavorite);
-            notifyItemChanged(position); // cập nhật lại item sau khi đổi trạng thái
-            String message = isFavorite ? "Đã thêm vào yêu thích" : "Đã xóa khỏi yêu thích";
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            notifyItemChanged(position);
+
+            int isFavValue = isFavorite ? 1 : 0;
+            compositeDisposable.add(apiTimeApp.updateFavorite(task.getId(), isFavValue)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            taskModel -> {
+                                String message = isFavorite ? "Đã thêm vào yêu thích" : "Đã xóa khỏi yêu thích";
+                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                            },
+                            throwable -> {
+                                Toast.makeText(context, "Lỗi: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                    ));
         });
+
 
         //Hiển thị thời gian đếm ngược
         holder.itemView.setOnClickListener(v -> {
@@ -83,6 +107,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 taskList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, taskList.size());
+                int taskId = task.getId();
+                removeTask(taskId);
+
             });
 
             builder.setNegativeButton("Không", null);
@@ -113,6 +140,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     }
 
+    private void removeTask(int taskId) {
+        compositeDisposable.add(apiTimeApp.deleteTask(taskId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        taskModel -> {
+
+                        }, throwable -> {
+                            Toast.makeText(context.getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                ));
+    }
+
     @Override
     public int getItemCount() {
         return taskList.size();
@@ -124,6 +164,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
+            apiTimeApp = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiTimeApp.class);
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtTime = itemView.findViewById(R.id.txtTime);
             imgBookmark = itemView.findViewById(R.id.imgBookmark);

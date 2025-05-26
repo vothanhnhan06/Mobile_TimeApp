@@ -33,7 +33,6 @@ public class HomeActivity extends Fragment {
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
     private List<Task> taskList;
-
     ApiTimeApp apiTimeApp;
     CompositeDisposable compositeDisposable=new CompositeDisposable();
 
@@ -46,11 +45,9 @@ public class HomeActivity extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewTasks);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        taskList = new ArrayList<>();
+        taskList=new ArrayList<>();
         taskAdapter = new TaskAdapter(getContext(), taskList);
         recyclerView.setAdapter(taskAdapter);
-
-
         getTask(taskList,taskAdapter);
         return view;
     }
