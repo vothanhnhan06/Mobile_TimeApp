@@ -48,36 +48,37 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.activity_task, parent, false);
+
+
         return new TaskViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = taskList.get(position);
-        int favorite = task.isFavorite();
         holder.txtTitle.setText(task.getTitle());
         holder.txtTime.setText(task.getTime());
 
 
         // Hiển thị đúng màu theo trạng thái yêu thích
-        if (favorite==1) {
+        if (task.isFavorite()) {
             holder.imgBookmark.setColorFilter(ContextCompat.getColor(context, R.color.yellow));
-
         } else {
             holder.imgBookmark.setColorFilter(ContextCompat.getColor(context, R.color.white));
         }
 
         holder.imgBookmark.setOnClickListener(v -> {
-            int isFavorite = (favorite == 1) ? 0 : 1;
+            boolean isFavorite = !task.isFavorite();
             task.setFavorite(isFavorite);
             notifyItemChanged(position);
 
-            compositeDisposable.add(apiTimeApp.updateFavorite(task.getId(), isFavorite)
+            int isFavValue = isFavorite ? 1 : 0;
+            compositeDisposable.add(apiTimeApp.updateFavorite(task.getId(), isFavValue)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             taskModel -> {
-                                String message = (isFavorite==1) ? "Đã thêm vào yêu thích" : "Đã xóa khỏi yêu thích";
+                                String message = isFavorite ? "Đã thêm vào yêu thích" : "Đã xóa khỏi yêu thích";
                                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                             },
                             throwable -> {
@@ -132,6 +133,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     negativeButton.setText("Không");
                 }
             });
+
             dialog.show();
         });
 

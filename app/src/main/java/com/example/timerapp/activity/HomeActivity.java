@@ -54,6 +54,7 @@ public class HomeActivity extends Fragment implements SearchableFragment {
         recyclerView.setAdapter(taskAdapter);
         getTask();
         return view;
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

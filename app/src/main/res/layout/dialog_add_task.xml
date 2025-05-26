@@ -52,6 +52,21 @@
         android:background="@drawable/edittext"
         android:layout_marginTop="8dp"/>
 
+    <!-- Thêm vào thư mục -->
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Thêm vào thư mục"
+        android:textStyle="bold"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/spinnerFolder"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/spinner_background"/>
     <LinearLayout
         android:layout_width="250dp"
         android:layout_height="wrap_content"

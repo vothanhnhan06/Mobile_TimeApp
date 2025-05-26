@@ -9,7 +9,7 @@
         android:id="@+id/dialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Đăng xuất"
+        android:text="Thông báo!"
         android:textAlignment="center"
         android:textColor="#355E3B"
         android:textStyle="bold"

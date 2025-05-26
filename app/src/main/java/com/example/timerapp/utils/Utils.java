@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class Utils {
-    public static final String BASE_URL="http://192.168.126.128/timeapp/";
+    public static final String BASE_URL="http://10.45.96.103/timeapp/";
 
     public static User user_current=new User();
 }
