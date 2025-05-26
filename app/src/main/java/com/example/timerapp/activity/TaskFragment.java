@@ -95,7 +95,6 @@ public class TaskFragment extends Fragment {
                             if (taskModel.isSuccess()) {
                                 taskList.clear();
                                 taskList.addAll(taskModel.getResult());
-                                Toast.makeText(requireContext(),"ma folder:"+id_folder, Toast.LENGTH_SHORT).show();
                                 taskAdapter.notifyDataSetChanged();
                             } else {
                                 Toast.makeText(requireContext(),taskModel.getMessage(), Toast.LENGTH_SHORT).show();
@@ -104,6 +103,10 @@ public class TaskFragment extends Fragment {
                             Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                 ));
+    }
+
+    public void refresh() {
+        getTask(); // Gọi lại để tải dữ liệu mới
     }
 
 }

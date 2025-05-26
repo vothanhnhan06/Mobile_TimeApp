@@ -15,18 +15,27 @@ import android.widget.TextView;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.timerapp.R;
 
+import com.example.timerapp.retrofit.ApiTimeApp;
+import com.example.timerapp.retrofit.RetrofitClient;
+import com.example.timerapp.utils.Utils;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.sql.Time;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import nl.dionsegijn.konfetti.core.Party;
 import nl.dionsegijn.konfetti.core.PartyFactory;
 import nl.dionsegijn.konfetti.core.Position;
@@ -56,10 +65,14 @@ public class CountTimerActivity extends AppCompatActivity {
     KonfettiView konfettiView;
     TextView txtCompleted;
     Ringtone ringtone;
+    ApiTimeApp apiTimeApp;
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_counttimer);
+        apiTimeApp = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiTimeApp.class);
+
 
 
         container = findViewById(R.id.circleContainer);
@@ -73,9 +86,11 @@ public class CountTimerActivity extends AppCompatActivity {
 
         konfettiView = findViewById(R.id.konfettiView);
         txtCompleted = findViewById(R.id.txtCompleted);
+
         // Nhận thời gian từ Intent
         String timeString = getIntent().getStringExtra("time");
         String title = getIntent().getStringExtra("title");
+        int task_id = getIntent().getIntExtra("task_id",-1);
 
         txtTimer.setText(timeString);
         txtTitle.setText(title);
@@ -103,6 +118,7 @@ public class CountTimerActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> {
             Intent intent = new Intent(CountTimerActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("shouldReload", true);
             startActivity(intent);
             finish();
         });
@@ -122,7 +138,7 @@ public class CountTimerActivity extends AppCompatActivity {
         //Edit thời gian
         btnEdit = findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(v -> {
-            showTimePickerDialog();
+            showTimePickerDialog(task_id);
         });
 
 
@@ -235,7 +251,7 @@ public class CountTimerActivity extends AppCompatActivity {
         long secs = seconds % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, secs);
     }
-    private void showTimePickerDialog() {
+    private void showTimePickerDialog(int task_id) {
         BottomSheetDialog editDialog = new BottomSheetDialog(this);
         View view = getLayoutInflater().inflate(R.layout.activity_edit, null);
         editDialog.setContentView(view);
@@ -267,9 +283,9 @@ public class CountTimerActivity extends AppCompatActivity {
             long totalMillis = (hours * 3600 + minutes * 60 + seconds) * 1000L;
             totalTime = totalMillis;
             timeLeft = totalMillis;
-
-            txtTimer.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
-
+            String new_time=String.format("%02d:%02d:%02d", hours, minutes, seconds);
+            txtTimer.setText(new_time);
+            updateTask(task_id,new_time);
             editDialog.dismiss();
         });
 
@@ -279,5 +295,22 @@ public class CountTimerActivity extends AppCompatActivity {
         btnCloseEdit.setOnClickListener(v -> {
             editDialog.dismiss();
         });
+    }
+
+    private void updateTask(int task_id, String new_time) {
+        compositeDisposable.add(apiTimeApp.updateTask(task_id, new_time )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        taskModel -> {
+                            if (taskModel.isSuccess()) {
+                                Toast.makeText(this,taskModel.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this,taskModel.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }, throwable -> {
+                            Toast.makeText(this, "new time"+new_time+"task_id"+task_id, Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 }

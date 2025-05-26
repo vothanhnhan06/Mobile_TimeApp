@@ -78,4 +78,10 @@ public class LibraryActivity extends Fragment {
                         }
                 ));
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear(); // Dọn dẹp RxJava
+    }
 }

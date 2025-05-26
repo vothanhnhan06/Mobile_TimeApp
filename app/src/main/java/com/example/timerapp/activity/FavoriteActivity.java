@@ -91,4 +91,14 @@ public class FavoriteActivity extends Fragment implements SearchableFragment {
             Toast.makeText(getContext(), "Không tìm thấy task nào", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void refresh() {
+        getTask(); // Gọi lại để tải dữ liệu mới
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear(); // Dọn dẹp RxJava
+    }
 }

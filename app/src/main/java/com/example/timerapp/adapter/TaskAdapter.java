@@ -99,6 +99,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             Intent intent = new Intent(context, CountTimerActivity.class);
             intent.putExtra("title", task.getTitle());
             intent.putExtra("time", task.getTime());
+            intent.putExtra("task_id", task.getId());
             context.startActivity(intent);
         });
         //Xóa thời gian đếm ngược

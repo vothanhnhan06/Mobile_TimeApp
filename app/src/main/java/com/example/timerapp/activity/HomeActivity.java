@@ -97,6 +97,14 @@ public class HomeActivity extends Fragment implements SearchableFragment {
         }
     }
 
+    public void refresh() {
+        getTask(); // Gọi lại để tải dữ liệu mới
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear(); // Dọn dẹp RxJava
+    }
 }
 

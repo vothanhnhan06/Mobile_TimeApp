@@ -1,6 +1,7 @@
 package com.example.timerapp.activity;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -34,6 +35,26 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgAdd, imgSearch;
     private TextView txtUserName;
     private boolean isSearchVisible = false;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent); // Cập nhật Intent
+        // Kiểm tra nếu cần reload
+        if (intent.getBooleanExtra("shouldReload", false)) {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+            if (currentFragment instanceof HomeActivity) {
+                ((HomeActivity) currentFragment).refresh();
+            } else if (currentFragment instanceof FavoriteActivity) {
+                ((FavoriteActivity) currentFragment).refresh();
+            } else if (currentFragment instanceof TaskFragment) {
+                ((TaskFragment) currentFragment).refresh();
+            } else {
+                // Mặc định chuyển về HomeActivity và reload
+                loadHomeFragment(true);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
             headerLayout.setVisibility(View.VISIBLE);
         } else if (id == R.id.menu_favourite) {
             selectedFragment = new FavoriteActivity();
-
             headerLayout.setVisibility(View.VISIBLE);
         } else if (id == R.id.menu_personal) {
             selectedFragment = new ProfileActivity();
@@ -149,6 +169,20 @@ public class MainActivity extends AppCompatActivity {
         imgAdd = headerLayout.findViewById(R.id.imgAdd);
         imgSearch = findViewById(R.id.imgSearch);
         txtUserName = findViewById(R.id.txtUserName);
+    }
+
+    private void loadHomeFragment(boolean shouldReload) {
+        Fragment homeFragment = new HomeActivity();
+        if (shouldReload) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("shouldReload", true);
+            homeFragment.setArguments(bundle);
+        }
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, homeFragment)
+                .commit();
+        bottomNavigationView.setSelectedItemId(R.id.menu_home);
+        headerLayout.setVisibility(View.VISIBLE);
     }
 }
 

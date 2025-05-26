@@ -92,4 +92,11 @@ public interface ApiTimeApp {
     Single<taskModel> getTaskFolder(
             @Field("id_folder") int id_folder
     );
+
+    @FormUrlEncoded
+    @POST("updateTask.php")
+    Single<taskModel> updateTask(
+            @Field("task_id") int task_id,
+            @Field("time") String time
+    );
 }
