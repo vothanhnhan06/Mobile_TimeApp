@@ -5,7 +5,6 @@ public class User {
     String pass;
     String name;
     String image_path;
-
     String user_id;
 
     public User(String email, String pass, String name, String image_path, String user_id) {

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timerapp.Interface.SearchableFragment;
 import com.example.timerapp.R;
 import com.example.timerapp.model.Task;
 import com.example.timerapp.adapter.TaskAdapter;
@@ -23,17 +24,19 @@ import com.example.timerapp.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class HomeActivity extends Fragment {
+public class HomeActivity extends Fragment implements SearchableFragment {
 
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
     private List<Task> taskList;
     ApiTimeApp apiTimeApp;
+    private List<Task> filteredTaskList;
     CompositeDisposable compositeDisposable=new CompositeDisposable();
 
     @SuppressLint("NotifyDataSetChanged")
@@ -46,14 +49,15 @@ public class HomeActivity extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         taskList=new ArrayList<>();
+        filteredTaskList = new ArrayList<>();
         taskAdapter = new TaskAdapter(getContext(), taskList);
         recyclerView.setAdapter(taskAdapter);
-        getTask(taskList,taskAdapter);
+        getTask();
         return view;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void getTask(List<Task> taskList, TaskAdapter taskAdapter){
+    private void getTask(){
         compositeDisposable.add(apiTimeApp.getTask(Utils.user_current.getUser_id())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -62,6 +66,8 @@ public class HomeActivity extends Fragment {
                             if (taskModel.isSuccess()) {
                                 taskList.clear();
                                 taskList.addAll(taskModel.getResult());
+                                filteredTaskList.clear();
+                                filteredTaskList.addAll(taskList);
                                 taskAdapter.notifyDataSetChanged();
                             } else {
                                 Toast.makeText(requireContext(), taskModel.getMessage(), Toast.LENGTH_SHORT).show();
@@ -71,5 +77,25 @@ public class HomeActivity extends Fragment {
                         }
                 ));
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void filterTasks(String query) {
+        filteredTaskList.clear();
+        if (query.isEmpty()) {
+            filteredTaskList.addAll(taskList);
+        } else {
+            String lowerCaseQuery = query.toLowerCase();
+            filteredTaskList.addAll(taskList.stream()
+                    .filter(task -> task.getTitle().toLowerCase().contains(lowerCaseQuery))
+                    .collect(Collectors.toList()));
+        }
+        taskAdapter.notifyDataSetChanged();
+        if (filteredTaskList.isEmpty() && !query.isEmpty()) {
+            Toast.makeText(getContext(), "Không tìm thấy task nào", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }
 

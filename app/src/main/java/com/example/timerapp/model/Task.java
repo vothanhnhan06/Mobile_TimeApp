@@ -6,7 +6,7 @@ public class Task {
     private int id;
     private int id_user;
     private String time;
-    private boolean isFavorite; // trạng thái yêu thích
+    private int is_favorite; // trạng thái yêu thích
     private String image_path;
 
     public Task(String title, int id_user, String time) {
@@ -51,12 +51,12 @@ public class Task {
         this.time = time;
     }
 
-    public boolean isFavorite() {
-        return isFavorite;
+    public int isFavorite() {
+        return is_favorite;
     }
 
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
+    public void setFavorite(int favorite) {
+        is_favorite = favorite;
     }
 
     public String getImage_path() {

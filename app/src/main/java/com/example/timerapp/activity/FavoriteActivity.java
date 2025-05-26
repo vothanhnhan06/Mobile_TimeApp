@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timerapp.Interface.SearchableFragment;
 import com.example.timerapp.R;
 import com.example.timerapp.adapter.TaskAdapter;
 import com.example.timerapp.model.Task;
@@ -20,34 +21,39 @@ import com.example.timerapp.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class FavoriteActivity extends Fragment {
+public class FavoriteActivity extends Fragment implements SearchableFragment {
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
     private List<Task> taskList;
     ApiTimeApp apiTimeApp;
+    private List<Task> filteredTaskList;
     CompositeDisposable compositeDisposable=new CompositeDisposable();
-    @SuppressLint("NotifyDataSetChanged")
+
+    @SuppressLint({"NotifyDataSetChanged", "MissingInflatedId"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_favourite, container, false);
         apiTimeApp = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiTimeApp.class);
 
-        recyclerView = view.findViewById(R.id.recyclerViewLibrary);
-        taskList=new ArrayList<>();
+        recyclerView = view.findViewById(R.id.recyclerViewFavorite);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        taskList=new ArrayList<>();
+        filteredTaskList = new ArrayList<>();
         taskAdapter = new TaskAdapter(getContext(), taskList);
         recyclerView.setAdapter(taskAdapter);
-        getTaskFavorite(taskList, taskAdapter);
+        getTask();
         return view;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void getTaskFavorite(List<Task> taskList, TaskAdapter taskAdapter){
+    private void getTask(){
         compositeDisposable.add(apiTimeApp.getTaskFavorite(Utils.user_current.getUser_id())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -56,12 +62,33 @@ public class FavoriteActivity extends Fragment {
                             if (taskModel.isSuccess()) {
                                 taskList.clear();
                                 taskList.addAll(taskModel.getResult());
+                                filteredTaskList.clear();
+                                filteredTaskList.addAll(taskList);
                                 taskAdapter.notifyDataSetChanged();
-
+                            } else {
+                                Toast.makeText(requireContext(), taskModel.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }, throwable -> {
                             Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                 ));
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void filterTasks(String query) {
+        filteredTaskList.clear();
+        if (query.isEmpty()) {
+            filteredTaskList.addAll(taskList);
+        } else {
+            String lowerCaseQuery = query.toLowerCase();
+            filteredTaskList.addAll(taskList.stream()
+                    .filter(task -> task.getTitle().toLowerCase().contains(lowerCaseQuery))
+                    .collect(Collectors.toList()));
+        }
+        taskAdapter.notifyDataSetChanged();
+        if (filteredTaskList.isEmpty() && !query.isEmpty()) {
+            Toast.makeText(getContext(), "Không tìm thấy task nào", Toast.LENGTH_SHORT).show();
+        }
     }
 }
