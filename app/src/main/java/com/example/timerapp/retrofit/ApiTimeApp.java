@@ -1,6 +1,8 @@
 package com.example.timerapp.retrofit;
 
 import com.example.timerapp.model.UserModel;
+import com.example.timerapp.model.taskModel;
+
 import io.reactivex.rxjava3.core.Single; // Switch to Single for a single response
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -45,7 +47,7 @@ public interface ApiTimeApp {
 
     @FormUrlEncoded
     @POST("getTask.php")
-    Single<UserModel> getTask(
+    Single<taskModel> getTask(
             @Field("user_id") String user_id
     );
 

@@ -5,12 +5,12 @@ import java.util.List;
 public class taskModel {
     boolean success;
     String message;
-    List<Task> resutl;
+    List<Task> result;
 
-    public taskModel(boolean success, String message, List<Task> resutl) {
+    public taskModel(boolean success, String message, List<Task> result) {
         this.success = success;
         this.message = message;
-        this.resutl = resutl;
+        this.result = result;
     }
 
     public taskModel(){
@@ -32,11 +32,11 @@ public class taskModel {
         this.message = message;
     }
 
-    public List<Task> getResutl() {
-        return resutl;
+    public List<Task> getResult() {
+        return result;
     }
 
-    public void setResutl(List<Task> resutl) {
-        this.resutl = resutl;
+    public void setResult(List<Task> result) {
+        this.result = result;
     }
 }
