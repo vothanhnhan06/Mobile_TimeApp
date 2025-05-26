@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:gravity="center_vertical"
+    android:background="#8BC34A"
+    android:layout_marginBottom="8dp">
+
+    <ImageView
+        android:id="@+id/imgFolderIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/pic_cooking"
+        android:background="@drawable/rounded_bg"
+        android:clipToOutline="true"/>
+
+    <TextView
+        android:id="@+id/tvFolderName"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:text="Tên thư mục"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:layout_marginStart="12dp" />
+
+</LinearLayout>

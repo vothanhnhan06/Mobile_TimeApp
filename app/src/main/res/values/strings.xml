@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TimerApp</string>
+    <string-array name="folder_list">
+        <item>Thư mục 1</item>
+        <item>Thư mục 2</item>
+        <item>Thư mục 3</item>
+    </string-array>
 </resources>

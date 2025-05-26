@@ -15,9 +15,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,7 +80,13 @@ public class MainActivity extends AppCompatActivity {
         // Xử lý nút add task
         imgAdd.setOnClickListener(v -> {
 
-            showAddTaskDialog();
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+
+            if (currentFragment instanceof HomeActivity) {
+                showAddTaskDialog(); // dialog thêm task trang Home
+            } else if (currentFragment instanceof LibraryActivity) {
+                showAddTaskDialogForLibrary(); // dialog thêm task trang Library (khác)
+            }
         });
     }
 
@@ -88,13 +97,15 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_home) {
             selectedFragment = new HomeActivity();
             headerLayout.setVisibility(View.VISIBLE);
+            imgAdd.setVisibility(View.VISIBLE);
         } else if (id == R.id.menu_library) {
             selectedFragment = new LibraryActivity();
             headerLayout.setVisibility(View.VISIBLE);
+            imgAdd.setVisibility(View.VISIBLE);
         } else if (id == R.id.menu_favourite) {
             selectedFragment = new FavoriteActivity();
-
             headerLayout.setVisibility(View.VISIBLE);
+            imgAdd.setVisibility(View.GONE);
         } else if (id == R.id.menu_personal) {
             selectedFragment = new ProfileActivity();
             headerLayout.setVisibility(View.GONE);
@@ -112,6 +123,36 @@ public class MainActivity extends AppCompatActivity {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_task, null);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
+
+        // Khai báo Spinner đúng cách
+        Spinner spinnerFolder = dialogView.findViewById(R.id.spinnerFolder);
+
+        // Tạo adapter từ string-array
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.folder_list,
+                android.R.layout.simple_spinner_item
+        );
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFolder.setAdapter(adapter);
+
+        // Xử lý khi người dùng chọn mục
+        spinnerFolder.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedFolder = parent.getItemAtPosition(position).toString();
+                Toast.makeText(MainActivity.this, "Chọn: " + selectedFolder, Toast.LENGTH_SHORT).show();
+
+                // TODO: Lọc task theo thư mục nếu cần
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Không chọn gì
+            }
+        });
+
 
         Button btnSave = dialogView.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(view -> {
@@ -141,7 +182,38 @@ public class MainActivity extends AppCompatActivity {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
+    private void showAddTaskDialogForLibrary(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_library, null);
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
 
+        Button btnSave = dialogView.findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(view -> {
+            dialog.dismiss();
+
+            AlertDialog.Builder successBuilder = new AlertDialog.Builder(this);
+            View dialogNotification = LayoutInflater.from(this).inflate(R.layout.dialog_notification_success, null);
+            successBuilder.setView(dialogNotification);
+            successBuilder.setCancelable(false);
+
+            AlertDialog dialogSave = successBuilder.create();
+            dialogSave.show();
+
+            TextView txtTitle = dialogNotification.findViewById(R.id.txtDialogTitle);
+            TextView txtMessage = dialogNotification.findViewById(R.id.txtDialogMessage);
+            txtTitle.setText("Thông báo");
+            txtMessage.setText("Đã thêm vào thư viện của bạn!");
+
+            new Handler().postDelayed(dialogSave::dismiss, 2500);
+        });
+        ImageView imgClose = dialogView.findViewById(R.id.imgClose);
+        imgClose.setOnClickListener(view -> dialog.dismiss());
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
     private void init(){
         headerLayout = findViewById(R.id.headerLayout);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);

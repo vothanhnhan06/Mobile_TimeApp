@@ -50,6 +50,7 @@ public class HomeActivity extends Fragment {
         recyclerView.setAdapter(taskAdapter);
         getTask(taskList,taskAdapter);
         return view;
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
