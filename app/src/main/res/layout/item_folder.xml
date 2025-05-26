@@ -13,7 +13,7 @@
         android:id="@+id/imgFolderIcon"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/pic_cooking"
+        android:src="@drawable/book"
         android:background="@drawable/rounded_bg"
         android:clipToOutline="true"/>
 

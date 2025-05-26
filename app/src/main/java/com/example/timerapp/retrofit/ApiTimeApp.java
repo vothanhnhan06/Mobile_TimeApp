@@ -1,6 +1,7 @@
 package com.example.timerapp.retrofit;
 
 import com.example.timerapp.model.UserModel;
+import com.example.timerapp.model.folderModel;
 import com.example.timerapp.model.taskModel;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -80,4 +81,15 @@ public interface ApiTimeApp {
             @Field("is_favorite") int isFavorite
     );
 
+    @FormUrlEncoded
+    @POST("getFolder.php")
+    Single<folderModel> getFolder(
+            @Field("user_id") String user_id
+    );
+
+    @FormUrlEncoded
+    @POST("getTaskFolder.php")
+    Single<taskModel> getTaskFolder(
+            @Field("id_folder") int id_folder
+    );
 }

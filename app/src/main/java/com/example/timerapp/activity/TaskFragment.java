@@ -1,11 +1,13 @@
 package com.example.timerapp.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,21 +16,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.timerapp.R;
 import com.example.timerapp.adapter.TaskAdapter;
 import com.example.timerapp.model.Task;
+import com.example.timerapp.retrofit.ApiTimeApp;
+import com.example.timerapp.retrofit.RetrofitClient;
+import com.example.timerapp.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class TaskFragment extends Fragment {
     private static final String ARG_FOLDER_NAME = "folder_name";
     private String folderName;
-
+    private int id_folder;
     private RecyclerView recyclerView;
     private List<Task> taskList = new ArrayList<>(); // Giả sử task là danh sách String thời gian
     private TaskAdapter taskAdapter;
-    public static TaskFragment newInstance(String folderName) {
+    ApiTimeApp apiTimeApp;
+    CompositeDisposable compositeDisposable=new CompositeDisposable();
+    public static TaskFragment newInstance(String folderName, int id_folder) {
         TaskFragment fragment = new TaskFragment();
         Bundle args = new Bundle();
         args.putString(ARG_FOLDER_NAME, folderName);
+        args.putInt("id_folder", id_folder);
         fragment.setArguments(args);
         return fragment;
     }
@@ -36,8 +48,11 @@ public class TaskFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        apiTimeApp = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiTimeApp.class);
+
         if (getArguments() != null) {
             folderName = getArguments().getString(ARG_FOLDER_NAME);
+            id_folder= getArguments().getInt("id_folder");
         }
     }
 
@@ -59,15 +74,36 @@ public class TaskFragment extends Fragment {
 
         // TODO: Hiển thị danh sách thời gian (task) ở đây
         taskList = new ArrayList<>();
-        taskList.add(new Task( "Học bài", 1, "08:00:00"));
+        taskAdapter = new TaskAdapter(getContext(), taskList);
+        getTask();
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewTasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        TaskAdapter adapter = new TaskAdapter(getContext(), taskList);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(taskAdapter);
 
         return view;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void getTask() {
+        compositeDisposable.add(apiTimeApp.getTaskFolder(id_folder)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        taskModel -> {
+                            if (taskModel.isSuccess()) {
+                                taskList.clear();
+                                taskList.addAll(taskModel.getResult());
+                                Toast.makeText(requireContext(),"ma folder:"+id_folder, Toast.LENGTH_SHORT).show();
+                                taskAdapter.notifyDataSetChanged();
+                            } else {
+                                Toast.makeText(requireContext(),taskModel.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }, throwable -> {
+                            Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 
 }

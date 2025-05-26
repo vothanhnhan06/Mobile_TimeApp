@@ -47,7 +47,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_task, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_task, parent, false);
 
 
         return new TaskViewHolder(view);
@@ -56,29 +56,34 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = taskList.get(position);
+        int isFavorite=task.isFavorite();
         holder.txtTitle.setText(task.getTitle());
         holder.txtTime.setText(task.getTime());
 
 
         // Hiển thị đúng màu theo trạng thái yêu thích
-        if (task.isFavorite()) {
+        if (isFavorite==1) {
             holder.imgBookmark.setColorFilter(ContextCompat.getColor(context, R.color.yellow));
         } else {
             holder.imgBookmark.setColorFilter(ContextCompat.getColor(context, R.color.white));
         }
 
         holder.imgBookmark.setOnClickListener(v -> {
-            boolean isFavorite = !task.isFavorite();
-            task.setFavorite(isFavorite);
-            notifyItemChanged(position);
+            // Đảo trạng thái yêu thích (0 -> 1, 1 -> 0)
+            int isFavorites = task.isFavorite() == 1 ? 0 : 1;
 
-            int isFavValue = isFavorite ? 1 : 0;
-            compositeDisposable.add(apiTimeApp.updateFavorite(task.getId(), isFavValue)
+            // Cập nhật giá trị mới cho task
+            task.setFavorite(isFavorites);
+
+            notifyItemChanged(position); // Cập nhật UI
+
+            int finalIsFavorites = isFavorites; // cần biến final cho lambda
+            compositeDisposable.add(apiTimeApp.updateFavorite(task.getId(), finalIsFavorites)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             taskModel -> {
-                                String message = isFavorite ? "Đã thêm vào yêu thích" : "Đã xóa khỏi yêu thích";
+                                String message = finalIsFavorites == 1 ? "Đã thêm vào yêu thích" : "Đã xóa khỏi yêu thích";
                                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                             },
                             throwable -> {
@@ -86,6 +91,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                             }
                     ));
         });
+
 
 
         //Hiển thị thời gian đếm ngược

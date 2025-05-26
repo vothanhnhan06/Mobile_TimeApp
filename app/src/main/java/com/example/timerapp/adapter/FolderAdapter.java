@@ -43,7 +43,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderView
     @Override
     public void onBindViewHolder(FolderViewHolder holder, int position) {
         Folder folder = folderList.get(position);
-        holder.tvFolderName.setText(folder.getFolderName());
+        holder.tvFolderName.setText(folder.getName_folder());
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onItemClick(folder);

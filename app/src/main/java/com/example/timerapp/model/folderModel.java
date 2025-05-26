@@ -1,20 +1,19 @@
 package com.example.timerapp.model;
 
-import java.util.Collection;
 import java.util.List;
 
-public class UserModel {
+public class folderModel {
     boolean success;
     String message;
-    List<User> result;
+    List<Folder> result;
 
-    public UserModel(boolean success, List<User> result,String message) {
+    public folderModel(boolean success, List<Folder> result,String message) {
         this.success = success;
         this.message = message;
         this.result = result;
     }
 
-    public UserModel(){
+    public folderModel(){
 
     }
 
@@ -32,10 +31,10 @@ public class UserModel {
     public  void setMessage(String message){
         this.message=message;
     }
-    public List<User> getResult(){
+    public List<Folder> getResult(){
         return result;
     }
-    public void setResult(List<User> result){
+    public void setResult(List<Folder> result){
         this.result=result;
     }
 }
