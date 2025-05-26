@@ -52,6 +52,12 @@ public interface ApiTimeApp {
     );
 
     @FormUrlEncoded
+    @POST("getTaskFavorite.php")
+    Single<taskModel> getTaskFavorite(
+            @Field("user_id") String user_id
+    );
+
+    @FormUrlEncoded
     @POST("resetPassProfile.php")
     Single<UserModel> resetPassProfile(
             @Field("email") String email,

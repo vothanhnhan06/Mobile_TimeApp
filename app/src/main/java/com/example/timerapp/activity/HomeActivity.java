@@ -50,6 +50,7 @@ public class HomeActivity extends Fragment {
         taskAdapter = new TaskAdapter(getContext(), taskList);
         recyclerView.setAdapter(taskAdapter);
 
+
         getTask(taskList,taskAdapter);
         return view;
     }
@@ -65,7 +66,6 @@ public class HomeActivity extends Fragment {
                                 taskList.clear();
                                 taskList.addAll(taskModel.getResult());
                                 taskAdapter.notifyDataSetChanged();
-                                Toast.makeText(requireContext(), taskModel.getMessage(), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(requireContext(), taskModel.getMessage(), Toast.LENGTH_SHORT).show();
                             }

@@ -88,15 +88,13 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.menu_home) {
             selectedFragment = new HomeActivity();
             headerLayout.setVisibility(View.VISIBLE);
-            Toast.makeText(this, "Bấm Home", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_library) {
             selectedFragment = new LibraryActivity();
             headerLayout.setVisibility(View.VISIBLE);
-            Toast.makeText(this, "Bấm Library", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_favourite) {
             selectedFragment = new FavoriteActivity();
+
             headerLayout.setVisibility(View.VISIBLE);
-            Toast.makeText(this, "Bấm Favourite", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_personal) {
             selectedFragment = new ProfileActivity();
             headerLayout.setVisibility(View.GONE);
