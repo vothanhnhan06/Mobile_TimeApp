@@ -1,8 +1,11 @@
 package com.example.timerapp.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -15,9 +18,24 @@ import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.timerapp.R;
+
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import nl.dionsegijn.konfetti.core.Party;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.Position;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Shape;
+
+import java.util.concurrent.TimeUnit;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 public class CountTimerActivity extends AppCompatActivity {
     CircleCountdownView progressCircle;
     CountDownTimer countDownTimer;
@@ -35,11 +53,13 @@ public class CountTimerActivity extends AppCompatActivity {
     ImageView btnReset;
     ImageView btnEdit;
     ImageView btnCloseEdit;
-
+    KonfettiView konfettiView;
+    TextView txtCompleted;
+    Ringtone ringtone;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_counttimer);
 
 
         container = findViewById(R.id.circleContainer);
@@ -51,7 +71,8 @@ public class CountTimerActivity extends AppCompatActivity {
         txtTitle = findViewById(R.id.txtTitle);
         btnStart = findViewById(R.id.btnPause);
 
-
+        konfettiView = findViewById(R.id.konfettiView);
+        txtCompleted = findViewById(R.id.txtCompleted);
         // Nhận thời gian từ Intent
         String timeString = getIntent().getStringExtra("time");
         String title = getIntent().getStringExtra("title");
@@ -93,12 +114,18 @@ public class CountTimerActivity extends AppCompatActivity {
             txtTimer.setText(formatTime(totalTime));
             progressCircle.setProgress(1.0f);
             isFinished = false;
+            // Dừng chuông nếu đang phát
+            if (ringtone != null && ringtone.isPlaying()) {
+                ringtone.stop();
+            }
         });
         //Edit thời gian
         btnEdit = findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(v -> {
             showTimePickerDialog();
         });
+
+
     }
 
     private long convertTimeToMillis(String timeString) {
@@ -139,13 +166,54 @@ public class CountTimerActivity extends AppCompatActivity {
                 progressCircle.setProgress(0);
                 txtTimer.setText("00:00:00");
                 btnStart.setImageResource(R.drawable.ic_play); // đổi về icon phát
+                //Bắn pháo giấy
+                List<Party> parties = new ArrayList<>();
 
+                EmitterConfig emitterConfig = new Emitter(50, TimeUnit.MILLISECONDS).perSecond(500);
+
+                parties.add(new PartyFactory(emitterConfig)
+                        .angle(270)
+                        .spread(360)
+                        .setSpeedBetween(5f, 15f)
+                        .timeToLive(3000L)
+                        .position(new Position.Relative(0.1, 0.1))
+                        .build());
+
+                parties.add(new PartyFactory(emitterConfig)
+                        .angle(270)
+                        .spread(360)
+                        .setSpeedBetween(5f, 15f)
+                        .timeToLive(3000L)
+                        .position(new Position.Relative(0.9, 0.1))
+                        .build());
+
+                parties.add(new PartyFactory(emitterConfig)
+                        .angle(270)
+                        .spread(360)
+                        .setSpeedBetween(5f, 15f)
+                        .timeToLive(3000L)
+                        .position(new Position.Relative(0.5, 0.5))
+                        .build());
+
+                for (Party party : parties) {
+                    konfettiView.start(party);
+                }
                 // Phát nhạc chuông khi hết giờ
                 Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
-                if (ringtone != null) {
+                ringtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                if (ringtone != null && !ringtone.isPlaying()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        ringtone.setLooping(true); // lặp lại
+                    }
                     ringtone.play();
                 }
+
+                // Dừng tiếng chuông sau 10 giây
+                new Handler().postDelayed(() -> {
+                    if (ringtone != null && ringtone.isPlaying()) {
+                        ringtone.stop();
+                    }
+                }, 10000);
             }
         }.start();
 

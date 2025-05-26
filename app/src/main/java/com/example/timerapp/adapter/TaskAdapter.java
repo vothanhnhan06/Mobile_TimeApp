@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -25,14 +26,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     private List<Task> taskList;
     private Context context;
-
     public TaskAdapter(Context context, List<Task> taskList) {
         this.context = context;
         this.taskList = taskList;
     }
 
     public TaskAdapter(){
-        
+
     }
 
     @NonNull
@@ -57,8 +57,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
 
         holder.imgBookmark.setOnClickListener(v -> {
-            task.setFavorite(!task.isFavorite());
+            boolean isFavorite = !task.isFavorite();
+            task.setFavorite(isFavorite);
             notifyItemChanged(position); // cập nhật lại item sau khi đổi trạng thái
+            String message = isFavorite ? "Đã thêm vào yêu thích" : "Đã xóa khỏi yêu thích";
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         });
 
         //Hiển thị thời gian đếm ngược
@@ -73,7 +76,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
             // Inflate layout tùy chỉnh
-            View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_custom, null);
+            View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_delete, null);
             builder.setView(dialogView);
 
             builder.setPositiveButton("Có", (dialog, which) -> {
