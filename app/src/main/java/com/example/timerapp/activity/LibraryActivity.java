@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timerapp.Interface.SearchableFragment;
 import com.example.timerapp.R;
 import com.example.timerapp.adapter.FolderAdapter;
 import com.example.timerapp.model.Folder;
@@ -25,7 +26,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class LibraryActivity extends Fragment {
+public class LibraryActivity extends Fragment implements SearchableFragment {
     private RecyclerView recyclerView;
     private FolderAdapter folderAdapter;
     private List<Folder> folderList;
@@ -83,5 +84,14 @@ public class LibraryActivity extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         compositeDisposable.clear(); // Dọn dẹp RxJava
+    }
+
+    @Override
+    public void filterTasks(String query) {
+
+    }
+
+    public void refresh() {
+        getFolder(); // Gọi lại để tải dữ liệu mới
     }
 }

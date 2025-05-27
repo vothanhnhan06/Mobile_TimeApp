@@ -106,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 showAddTaskDialog(); // dialog cho trang Home
             } else if (currentFragment instanceof LibraryActivity) {
                 showAddTaskDialogForLibrary(); // dialog khác cho trang Library
-            } else {
-                showAddTaskDialogInLibrary();
             }
         });
     }
@@ -206,41 +204,6 @@ public class MainActivity extends AppCompatActivity {
     private void showAddTaskDialogForLibrary(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_library, null);
-        builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
-
-
-        Button btnSave = dialogView.findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(view -> {
-            dialog.dismiss();
-
-            AlertDialog.Builder successBuilder = new AlertDialog.Builder(this);
-            View dialogNotification = LayoutInflater.from(this).inflate(R.layout.dialog_notification_success, null);
-            successBuilder.setView(dialogNotification);
-            successBuilder.setCancelable(false);
-
-            AlertDialog dialogSave = successBuilder.create();
-            dialogSave.show();
-
-            TextView txtTitle = dialogNotification.findViewById(R.id.txtDialogTitle);
-            TextView txtMessage = dialogNotification.findViewById(R.id.txtDialogMessage);
-            txtTitle.setText("Thông báo");
-            txtMessage.setText("Đã thêm vào thư viện của bạn!");
-
-            new Handler().postDelayed(dialogSave::dismiss, 2500);
-        });
-
-        ImageView imgClose = dialogView.findViewById(R.id.imgClose);
-        imgClose.setOnClickListener(view -> dialog.dismiss());
-
-        dialog.show();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    }
-    private void showAddTaskDialogInLibrary(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_task_in_library, null);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
 
