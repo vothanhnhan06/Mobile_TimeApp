@@ -109,4 +109,12 @@ public interface ApiTimeApp {
             @Field("time") String time,
             @Field("isFavorite") int isFavorite
     );
+
+    @FormUrlEncoded
+    @POST("insertFolder.php")
+    Single<taskModel> insertFolder(
+            @Field("user_id") String user_id,
+            @Field("folder_name") String folder_name
+
+    );
 }

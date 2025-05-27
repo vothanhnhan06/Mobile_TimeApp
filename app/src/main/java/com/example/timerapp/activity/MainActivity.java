@@ -270,14 +270,18 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
 
 
+        EditText edtNameFolder = dialogView.findViewById(R.id.edtTaskName);
         Button btnSave = dialogView.findViewById(R.id.btnSave);
+        ImageView imgClose = dialogView.findViewById(R.id.imgClose);
+
+
         btnSave.setOnClickListener(view -> {
-            dialog.dismiss();
-
-
+            String taskNames = edtNameFolder.getText().toString();
+            if(checkInputFolder(taskNames)){
+                dialog.dismiss();
+                insertFolder(taskNames);}
         });
 
-        ImageView imgClose = dialogView.findViewById(R.id.imgClose);
         imgClose.setOnClickListener(view -> dialog.dismiss());
 
         dialog.show();
@@ -285,6 +289,51 @@ public class MainActivity extends AppCompatActivity {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
+
+    private void insertFolder(String taskNames) {
+        compositeDisposable.add(apiTimeApp.insertFolder(Utils.user_current.getUser_id(),taskNames)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(folderModel -> {
+                    if (folderModel.isSuccess()) {
+                        // Show success dialog
+                        AlertDialog.Builder successBuilder = new AlertDialog.Builder(this);
+                        View dialogNotification = LayoutInflater.from(this).inflate(R.layout.dialog_notification_success, null);
+                        successBuilder.setView(dialogNotification);
+                        successBuilder.setCancelable(false);
+
+                        AlertDialog dialogSave = successBuilder.create();
+                        dialogSave.show();
+
+                        TextView txtTitle = dialogNotification.findViewById(R.id.txtDialogTitle);
+                        TextView txtMessage = dialogNotification.findViewById(R.id.txtDialogMessage);
+                        txtTitle.setText("Thông báo");
+                        txtMessage.setText("Đã thêm mới thư mục!");
+
+                        new Handler().postDelayed(() -> {
+                            dialogSave.dismiss();
+                            // Refresh the current fragment
+                            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+                            if (currentFragment instanceof LibraryActivity) {
+                                ((LibraryActivity) currentFragment).refresh();
+                            }
+                        }, 2500);
+                    } else {
+                        Toast.makeText(MainActivity.this, folderModel.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }, throwable -> {
+                    Toast.makeText(MainActivity.this, "Lỗi: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                }));
+    }
+
+    private boolean checkInputFolder(String taskNames) {
+        if(taskNames.isEmpty()){
+            Toast.makeText(MainActivity.this, "Vui lòng nhập tên folder", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
     private void init(){
         headerLayout = findViewById(R.id.headerLayout);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
