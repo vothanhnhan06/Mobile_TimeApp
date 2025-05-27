@@ -11,6 +11,6 @@
 
     <!-- Icon mũi tên xổ xuống, canh bên phải -->
     <item android:gravity="end|center_vertical" android:right="8dp">
-        <bitmap android:src="@drawable/ic_arrow_down" />
+        <bitmap android:src="@drawable/ic_drop_down" />
     </item>
 </layer-list>
