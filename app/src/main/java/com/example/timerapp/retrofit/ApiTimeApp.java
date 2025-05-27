@@ -99,4 +99,14 @@ public interface ApiTimeApp {
             @Field("task_id") int task_id,
             @Field("time") String time
     );
+
+    @FormUrlEncoded
+    @POST("insertTask.php")
+    Single<taskModel> insertTask(
+            @Field("user_id") String user_id,
+            @Field("folder_id") String folder_id,
+            @Field("task_name") String task_name,
+            @Field("time") String time,
+            @Field("isFavorite") int isFavorite
+    );
 }

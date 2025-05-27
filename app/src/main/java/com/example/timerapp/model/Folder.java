@@ -36,4 +36,9 @@ public class Folder {
     public void setImage_path(String image_path) {
         this.image_path = image_path;
     }
+
+    @Override
+    public String toString() {
+        return name_folder; // chỉ hiển thị tên trong Spinner
+    }
 }
