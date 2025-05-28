@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.timerapp.Interface.SearchableFragment;
 import com.example.timerapp.R;
 import com.example.timerapp.adapter.TaskAdapter;
+import com.example.timerapp.model.Folder;
 import com.example.timerapp.model.Task;
 import com.example.timerapp.retrofit.ApiTimeApp;
 import com.example.timerapp.retrofit.RetrofitClient;
@@ -75,21 +76,23 @@ public class FavoriteActivity extends Fragment implements SearchableFragment {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    @Override
     public void filter(String query) {
-        filteredTaskList.clear();
+        List<Task> newFilteredList = new ArrayList<>();
         if (query.isEmpty()) {
-            filteredTaskList.addAll(taskList);
+            newFilteredList.addAll(taskList);
         } else {
-            String lowerCaseQuery = query.toLowerCase();
-            filteredTaskList.addAll(taskList.stream()
-                    .filter(task -> task.getTitle().toLowerCase().contains(lowerCaseQuery))
-                    .collect(Collectors.toList()));
+            String[] searchWords = query.trim().toLowerCase().split("\\s+");
+            for (Task task : taskList) {
+                String title = task.getTitle().toLowerCase();
+                for (String word : searchWords) {
+                    if (title.contains(word)) {
+                        newFilteredList.add(task);
+                        break;
+                    }
+                }
+            }
         }
-        taskAdapter.notifyDataSetChanged();
-        if (filteredTaskList.isEmpty() && !query.isEmpty()) {
-            Toast.makeText(getContext(), "Không tìm thấy task nào", Toast.LENGTH_SHORT).show();
-        }
+        taskAdapter.setTasks(newFilteredList); // Use DiffUtil to update
     }
 
     public void refresh() {

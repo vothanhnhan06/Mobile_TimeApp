@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timerapp.R;
@@ -72,10 +73,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             // Đảo trạng thái yêu thích (0 -> 1, 1 -> 0)
             int isFavorites = task.isFavorite() == 1 ? 0 : 1;
 
+            if(task.isFavorite() == 1){
+                taskList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, taskList.size());
+            }
             // Cập nhật giá trị mới cho task
             task.setFavorite(isFavorites);
-
-            notifyItemChanged(position); // Cập nhật UI
+            notifyItemChanged(position);
 
             int finalIsFavorites = isFavorites; // cần biến final cho lambda
             compositeDisposable.add(apiTimeApp.updateFavorite(task.getId(), finalIsFavorites)
@@ -84,6 +89,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     .subscribe(
                             taskModel -> {
                                 String message = finalIsFavorites == 1 ? "Đã thêm vào yêu thích" : "Đã xóa khỏi yêu thích";
+
                                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                             },
                             throwable -> {
@@ -100,6 +106,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             intent.putExtra("title", task.getTitle());
             intent.putExtra("time", task.getTime());
             intent.putExtra("task_id", task.getId());
+            intent.putExtra("imgTask", task.getImage_path());
             context.startActivity(intent);
         });
         //Xóa thời gian đếm ngược
@@ -177,5 +184,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             imgBookmark = itemView.findViewById(R.id.imgBookmark);
             imgDelete = itemView.findViewById(R.id.imgDelete);
         }
+    }
+
+    public void setTasks(List<Task> newTasks) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return taskList.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newTasks.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return taskList.get(oldItemPosition).getId() == newTasks.get(newItemPosition).getId();
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                return taskList.get(oldItemPosition).equals(newTasks.get(newItemPosition));
+            }
+        });
+        taskList.clear();
+        taskList.addAll(newTasks);
+        diffResult.dispatchUpdatesTo(this);
     }
 }

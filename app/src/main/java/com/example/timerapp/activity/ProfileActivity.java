@@ -93,7 +93,8 @@ public class ProfileActivity extends Fragment {
                             if(userModel.isSuccess()){
                                 Toast.makeText(getContext(), userModel.getMessage(), Toast.LENGTH_SHORT).show();
                                 tvUsernameHeader.setText(str_username);
-
+                                Utils.user_current.setUsernam(str_username);
+                                Utils.user_current.setPass(str_pass);
                                 edtNewPassword.getText().clear();
                                 edtCurrentPassword.getText().clear();
                             }

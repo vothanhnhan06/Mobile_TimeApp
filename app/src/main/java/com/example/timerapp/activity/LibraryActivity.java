@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,7 @@ public class LibraryActivity extends Fragment implements SearchableFragment {
     private RecyclerView recyclerView;
     private FolderAdapter adapter;
     private List<Folder> folderList;
+
     private List<Folder> filteredFolderList = new ArrayList<>();
     ApiTimeApp apiTimeApp;
     CompositeDisposable compositeDisposable=new CompositeDisposable();
@@ -49,6 +51,7 @@ public class LibraryActivity extends Fragment implements SearchableFragment {
 
         adapter = new FolderAdapter(getContext(), folderList, folder -> {
             // Xử lý khi click vào folder
+            hideSearchBar();
             TaskFragment taskFragment = TaskFragment.newInstance(folder.getName_folder(), folder.getId());
             getParentFragmentManager()
                     .beginTransaction()
@@ -60,6 +63,12 @@ public class LibraryActivity extends Fragment implements SearchableFragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    private void hideSearchBar() {
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).clearAndHideSearchBar();
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -89,19 +98,24 @@ public class LibraryActivity extends Fragment implements SearchableFragment {
         compositeDisposable.clear(); // Dọn dẹp RxJava
     }
 
-    @Override
+    @SuppressLint("NotifyDataSetChanged")
     public void filter(String query) {
-        filteredFolderList.clear();
+        List<Folder> newFilteredList = new ArrayList<>();
         if (query.isEmpty()) {
-            filteredFolderList.addAll(folderList);
+            newFilteredList.addAll(folderList);
         } else {
+            String[] searchWords = query.trim().toLowerCase().split("\\s+");
             for (Folder folder : folderList) {
-                if (folder.getName_folder().toLowerCase().contains(query)) {
-                    filteredFolderList.add(folder);
+                String title = folder.getName_folder().toLowerCase();
+                for (String word : searchWords) {
+                    if (title.contains(word)) {
+                        newFilteredList.add(folder);
+                        break;
+                    }
                 }
             }
         }
-        adapter.notifyDataSetChanged();
+        adapter.setFolder(newFilteredList); // Use DiffUtil to update
     }
 
     public void refresh() {

@@ -1,5 +1,6 @@
 package com.example.timerapp.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -62,6 +63,7 @@ public class CountTimerActivity extends AppCompatActivity {
     ImageView btnReset;
     ImageView btnEdit;
     ImageView btnCloseEdit;
+    ImageView imgTask;
     KonfettiView konfettiView;
     TextView txtCompleted;
     Ringtone ringtone;
@@ -80,6 +82,7 @@ public class CountTimerActivity extends AppCompatActivity {
         container.addView(circleView);
         progressCircle = circleView;
 
+        imgTask=findViewById(R.id.imgTask);
         txtTimer = findViewById(R.id.txtTimer);
         txtTitle = findViewById(R.id.txtTitle);
         btnStart = findViewById(R.id.btnPause);
@@ -90,10 +93,25 @@ public class CountTimerActivity extends AppCompatActivity {
         // Nhận thời gian từ Intent
         String timeString = getIntent().getStringExtra("time");
         String title = getIntent().getStringExtra("title");
+        String imgPath = getIntent().getStringExtra("imgTask");
         int task_id = getIntent().getIntExtra("task_id",-1);
 
         txtTimer.setText(timeString);
         txtTitle.setText(title);
+        if (imgPath != null && !imgPath.isEmpty()) {
+            // Lấy ID tài nguyên từ tên chuỗi
+            @SuppressLint("DiscouragedApi") int resourceId = getResources().getIdentifier(imgPath, "drawable", getPackageName());
+            if (resourceId != 0) { // Kiểm tra tài nguyên có tồn tại
+                imgTask.setImageResource(resourceId);
+            } else {
+                // Nếu không tìm thấy, đặt ảnh mặc định
+                imgTask.setImageResource(R.drawable.default_image);
+                Toast.makeText(this, "Không tìm thấy ảnh: " + imgPath, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Nếu imgPath null hoặc rỗng, đặt ảnh mặc định
+            imgTask.setImageResource(R.drawable.default_image);
+        }
 
         // Chuyển đổi sang milliseconds
         totalTime = convertTimeToMillis(timeString);

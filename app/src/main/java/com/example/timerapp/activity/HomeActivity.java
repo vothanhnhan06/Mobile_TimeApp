@@ -34,9 +34,9 @@ public class HomeActivity extends Fragment implements SearchableFragment {
 
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
-    private List<Task> taskList;
     ApiTimeApp apiTimeApp;
-    private List<Task> filteredTaskList;
+    private List<Task> filteredTaskList = new ArrayList<>(); // Danh sách đã lọc
+    private List<Task> taskList = new ArrayList<>(); // Giả sử task là danh sách String thời gian
     CompositeDisposable compositeDisposable=new CompositeDisposable();
 
     @SuppressLint("NotifyDataSetChanged")
@@ -48,9 +48,7 @@ public class HomeActivity extends Fragment implements SearchableFragment {
         recyclerView = view.findViewById(R.id.recyclerViewTasks);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        taskList=new ArrayList<>();
-        filteredTaskList = new ArrayList<>();
-        taskAdapter = new TaskAdapter(getContext(), taskList);
+        taskAdapter = new TaskAdapter(getContext(), filteredTaskList);
         recyclerView.setAdapter(taskAdapter);
         getTask();
         return view;
@@ -81,17 +79,22 @@ public class HomeActivity extends Fragment implements SearchableFragment {
 
     @SuppressLint("NotifyDataSetChanged")
     public void filter(String query) {
-        filteredTaskList.clear();
+        List<Task> newFilteredList = new ArrayList<>();
         if (query.isEmpty()) {
-            filteredTaskList.addAll(taskList);
+            newFilteredList.addAll(taskList);
         } else {
+            String[] searchWords = query.trim().toLowerCase().split("\\s+");
             for (Task task : taskList) {
-                if (task.getTitle().toLowerCase().contains(query)) {
-                    filteredTaskList.add(task);
+                String title = task.getTitle().toLowerCase();
+                for (String word : searchWords) {
+                    if (title.contains(word)) {
+                        newFilteredList.add(task);
+                        break;
+                    }
                 }
             }
         }
-        taskAdapter.notifyDataSetChanged();
+        taskAdapter.setTasks(newFilteredList); // Use DiffUtil to update
     }
 
     public void refresh() {

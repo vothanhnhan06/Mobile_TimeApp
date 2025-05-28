@@ -32,6 +32,7 @@ public class TaskFragment extends Fragment {
     private String folderName;
     private int id_folder;
     private RecyclerView recyclerView;
+    private List<Task> filteredTaskList = new ArrayList<>(); // Danh sách đã lọc
     private List<Task> taskList = new ArrayList<>(); // Giả sử task là danh sách String thời gian
     private TaskAdapter taskAdapter;
     ApiTimeApp apiTimeApp;
@@ -70,11 +71,17 @@ public class TaskFragment extends Fragment {
 
         // Xử lý nút quay lại
         ImageView imgBack = view.findViewById(R.id.imgBack);
-        imgBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
+        imgBack.setOnClickListener(v -> {
+            // Xóa nội dung và ẩn searchBar trước khi quay lại
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).clearAndHideSearchBar();
+            }
+            // Quay lại fragment trước
+            requireActivity().getSupportFragmentManager().popBackStack();
+        });
 
         // TODO: Hiển thị danh sách thời gian (task) ở đây
-        taskList = new ArrayList<>();
-        taskAdapter = new TaskAdapter(getContext(), taskList);
+        taskAdapter = new TaskAdapter(getContext(), filteredTaskList);
         getTask();
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewTasks);
@@ -95,6 +102,8 @@ public class TaskFragment extends Fragment {
                             if (taskModel.isSuccess()) {
                                 taskList.clear();
                                 taskList.addAll(taskModel.getResult());
+                                filteredTaskList.clear();
+                                filteredTaskList.addAll(taskList);
                                 taskAdapter.notifyDataSetChanged();
                             } else {
                                 Toast.makeText(requireContext(),taskModel.getMessage(), Toast.LENGTH_SHORT).show();
@@ -109,4 +118,29 @@ public class TaskFragment extends Fragment {
         getTask(); // Gọi lại để tải dữ liệu mới
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void filter(String query) {
+        List<Task> newFilteredList = new ArrayList<>();
+        if (query.isEmpty()) {
+            newFilteredList.addAll(taskList);
+        } else {
+            String[] searchWords = query.trim().toLowerCase().split("\\s+");
+            for (Task task : taskList) {
+                String title = task.getTitle().toLowerCase();
+                for (String word : searchWords) {
+                    if (title.contains(word)) {
+                        newFilteredList.add(task);
+                        break;
+                    }
+                }
+            }
+        }
+        taskAdapter.setTasks(newFilteredList); // Use DiffUtil to update
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear(); // Dọn dẹp RxJava
+    }
 }
