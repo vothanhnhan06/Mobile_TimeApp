@@ -76,7 +76,7 @@ public class FavoriteActivity extends Fragment implements SearchableFragment {
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void filterTasks(String query) {
+    public void filter(String query) {
         filteredTaskList.clear();
         if (query.isEmpty()) {
             filteredTaskList.addAll(taskList);

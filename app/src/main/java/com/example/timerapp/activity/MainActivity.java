@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -107,12 +109,42 @@ public class MainActivity extends AppCompatActivity {
         imgSearch.setOnClickListener(v -> {
             if (isSearchVisible) {
                 searchBar.setVisibility(View.GONE);
+                searchBar.setText(""); // Clear search text
+                // Reset filter in current fragment
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+                if (currentFragment instanceof HomeActivity) {
+                    ((HomeActivity) currentFragment).filter("");
+                } else if (currentFragment instanceof LibraryActivity) {
+                    ((LibraryActivity) currentFragment).filter("");
+                }
             } else {
                 searchBar.setVisibility(View.VISIBLE);
                 searchBar.requestFocus();
             }
             isSearchVisible = !isSearchVisible;
         });
+
+        // Add TextWatcher for real-time search
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String query = s.toString().trim().toLowerCase();
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+                if (currentFragment instanceof HomeActivity) {
+                    ((HomeActivity) currentFragment).filter(query);
+                } else if (currentFragment instanceof LibraryActivity) {
+                    ((LibraryActivity) currentFragment).filter(query);
+                }
+            }
+        });
+
+
 
         // Xử lý nút add task
         imgAdd.setOnClickListener(v -> {

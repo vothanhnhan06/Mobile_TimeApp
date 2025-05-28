@@ -28,8 +28,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class LibraryActivity extends Fragment implements SearchableFragment {
     private RecyclerView recyclerView;
-    private FolderAdapter folderAdapter;
+    private FolderAdapter adapter;
     private List<Folder> folderList;
+    private List<Folder> filteredFolderList = new ArrayList<>();
     ApiTimeApp apiTimeApp;
     CompositeDisposable compositeDisposable=new CompositeDisposable();
     @Override
@@ -42,10 +43,11 @@ public class LibraryActivity extends Fragment implements SearchableFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         folderList = new ArrayList<>();
+
         // Thêm folder mẫu
         getFolder();
 
-        folderAdapter = new FolderAdapter(getContext(), folderList, folder -> {
+        adapter = new FolderAdapter(getContext(), folderList, folder -> {
             // Xử lý khi click vào folder
             TaskFragment taskFragment = TaskFragment.newInstance(folder.getName_folder(), folder.getId());
             getParentFragmentManager()
@@ -55,7 +57,7 @@ public class LibraryActivity extends Fragment implements SearchableFragment {
                     .commit();
         });
 
-        recyclerView.setAdapter(folderAdapter);
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
@@ -70,7 +72,8 @@ public class LibraryActivity extends Fragment implements SearchableFragment {
                             if (folderModel.isSuccess()) {
                                 folderList.clear();
                                 folderList.addAll(folderModel.getResult());
-                                folderAdapter.notifyDataSetChanged();
+                                filter("");
+                                adapter.notifyDataSetChanged();
                             } else {
                                 Toast.makeText(requireContext(),folderModel.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -87,8 +90,18 @@ public class LibraryActivity extends Fragment implements SearchableFragment {
     }
 
     @Override
-    public void filterTasks(String query) {
-
+    public void filter(String query) {
+        filteredFolderList.clear();
+        if (query.isEmpty()) {
+            filteredFolderList.addAll(folderList);
+        } else {
+            for (Folder folder : folderList) {
+                if (folder.getName_folder().toLowerCase().contains(query)) {
+                    filteredFolderList.add(folder);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     public void refresh() {

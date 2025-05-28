@@ -1,5 +1,5 @@
 package com.example.timerapp.Interface;
 
 public interface SearchableFragment {
-    void filterTasks(String query);
+    void filter(String query);
 }

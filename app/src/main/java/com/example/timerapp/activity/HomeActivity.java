@@ -80,21 +80,18 @@ public class HomeActivity extends Fragment implements SearchableFragment {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    @Override
-    public void filterTasks(String query) {
+    public void filter(String query) {
         filteredTaskList.clear();
         if (query.isEmpty()) {
             filteredTaskList.addAll(taskList);
         } else {
-            String lowerCaseQuery = query.toLowerCase();
-            filteredTaskList.addAll(taskList.stream()
-                    .filter(task -> task.getTitle().toLowerCase().contains(lowerCaseQuery))
-                    .collect(Collectors.toList()));
+            for (Task task : taskList) {
+                if (task.getTitle().toLowerCase().contains(query)) {
+                    filteredTaskList.add(task);
+                }
+            }
         }
         taskAdapter.notifyDataSetChanged();
-        if (filteredTaskList.isEmpty() && !query.isEmpty()) {
-            Toast.makeText(getContext(), "Không tìm thấy task nào", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void refresh() {
