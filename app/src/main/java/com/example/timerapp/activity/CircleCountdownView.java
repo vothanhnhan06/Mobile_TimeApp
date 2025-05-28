@@ -51,8 +51,8 @@ public class CircleCountdownView extends View {
         rectF.set(left, top, right, bottom);
 
         // Vẽ nền xám
-        canvas.drawArc(rectF, 0, 360, false, bgPaint);
+        canvas.drawArc(rectF, -90, 360, false, bgPaint);
         // Vẽ phần tiến trình màu xanh
-        canvas.drawArc(rectF, 90, -360 * progress, false, progressPaint);
+        canvas.drawArc(rectF, -90, 360 * progress, false, progressPaint);
     }
 }
