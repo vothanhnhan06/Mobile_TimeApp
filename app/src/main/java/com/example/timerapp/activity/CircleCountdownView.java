@@ -12,6 +12,7 @@ public class CircleCountdownView extends View {
 
     private float progress = 1f; // từ 1.0 đến 0.0
 
+
     public CircleCountdownView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
