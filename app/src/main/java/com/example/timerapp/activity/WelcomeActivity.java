@@ -30,7 +30,6 @@ public class WelcomeActivity extends AppCompatActivity {
         apiTimeApp = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiTimeApp.class);
 
         if(isConnected(this)){
-            Toast.makeText(getApplicationContext(),"OK", Toast.LENGTH_SHORT).show();
             getUser();
         }
         else{

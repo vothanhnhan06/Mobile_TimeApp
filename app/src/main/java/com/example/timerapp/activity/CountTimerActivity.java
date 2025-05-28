@@ -156,6 +156,7 @@ public class CountTimerActivity extends AppCompatActivity {
         //Edit thời gian
         btnEdit = findViewById(R.id.btnEdit);
         btnEdit.setOnClickListener(v -> {
+            pauseTimer();
             showTimePickerDialog(task_id);
         });
 
@@ -322,6 +323,7 @@ public class CountTimerActivity extends AppCompatActivity {
                 .subscribe(
                         taskModel -> {
                             if (taskModel.isSuccess()) {
+                                txtTimer.setText(new_time);
                                 Toast.makeText(this,taskModel.getMessage(), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(this,taskModel.getMessage(), Toast.LENGTH_SHORT).show();

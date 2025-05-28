@@ -151,9 +151,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (currentFragment instanceof TaskFragment) {
                         ((TaskFragment) currentFragment).filter(query);
                     } else if(currentFragment instanceof FavoriteActivity){
-                        ((FavoriteActivity) currentFragment).filter(query);                    }
-                    else{
-                        Toast.makeText(MainActivity.this, "Không thể tìm kiếm trong màn hình hiện tại", Toast.LENGTH_SHORT).show();
+                        ((FavoriteActivity) currentFragment).filter(query);
                     }
                 };
                 handler.postDelayed(searchRunnable, 300); // Delay 300ms

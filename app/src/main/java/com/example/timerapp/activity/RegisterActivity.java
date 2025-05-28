@@ -32,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView txtLogin;
     private EditText email, pass, username, pass2;
     private boolean isPasswordVisible=false;
+    private boolean isPasswordVisible2=false;
     ApiTimeApp apiTimeApp;
     CompositeDisposable compositeDisposable=new CompositeDisposable();
 
@@ -49,6 +50,20 @@ public class RegisterActivity extends AppCompatActivity {
                     //Kiem tra xem cham vao vung drawableEnd khong
                     if(event.getRawX()>= (pass.getRight()-pass.getCompoundDrawables()[2].getBounds().width())){
                         togglePasswordVisibility();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+        pass2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_UP){
+                    //Kiem tra xem cham vao vung drawableEnd khong
+                    if(event.getRawX()>= (pass2.getRight()-pass2.getCompoundDrawables()[2].getBounds().width())){
+                        togglePasswordVisibilityPass2();
                         return true;
                     }
                 }
@@ -166,6 +181,20 @@ public class RegisterActivity extends AppCompatActivity {
         pass.setSelection(pass.getText().length());
     }
 
+    private void togglePasswordVisibilityPass2() {
+        if (isPasswordVisible2) {
+            // Ẩn mật khẩu
+            pass2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.eye_close_layout, 0);
+        } else {
+            // Hiện mật khẩu
+            pass2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            pass2.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.eye_open_layout, 0);
+        }
+        isPasswordVisible2 = !isPasswordVisible2;
+        // Di chuyển con trỏ đến cuối văn bản
+        pass2.setSelection(pass2.getText().length());
+    }
 
     private boolean checkInput() {
         String emailInput=email.getText().toString();
@@ -205,11 +234,11 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    /*@Override
+    @Override
     public void onDestroy() {
         compositeDisposable.clear();
         super.onDestroy();
-    }*/
+    }
 
     private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
