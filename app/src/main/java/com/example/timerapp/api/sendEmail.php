@@ -54,11 +54,11 @@ if (isset($_POST['email']) && isset($_POST['code'])) {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'nhanvohere@gmail.com';
-                $mail->Password = 'refc cjch pmpe igfv';
+                $mail->Username = 'ten_mail_cua_ban';
+                $mail->Password = 'ma_cua_ban';
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                 $mail->Port = 465;
-                $mail->setFrom("nhanvohere@gmail.com", 'TimerApp');
+                $mail->setFrom("ten_mail_cua_ban", 'TimerApp');
                 $mail->addAddress($email);
                 // Content
                 $mail->isHTML(true);

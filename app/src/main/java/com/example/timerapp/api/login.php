@@ -21,7 +21,7 @@ if(!empty($result)){
 }else{
     $arr = [
         "success" => false,
-        "message"=>"Không tìm thấy người dùng!"
+        "message"=>"Email/Password sai!"
     ];
 }
 print_r(json_encode($arr));

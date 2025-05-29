@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.timerapp.Interface.SearchableFragment;
 import com.example.timerapp.R;
 import com.example.timerapp.adapter.FolderAdapter;
+import com.example.timerapp.adapter.TaskAdapter;
 import com.example.timerapp.model.Folder;
 import com.example.timerapp.retrofit.ApiTimeApp;
 import com.example.timerapp.retrofit.RetrofitClient;
@@ -30,7 +31,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class LibraryActivity extends Fragment implements SearchableFragment {
     private RecyclerView recyclerView;
     private FolderAdapter adapter;
-    private List<Folder> folderList;
+    private List<Folder> folderList = new ArrayList<>();
 
     private List<Folder> filteredFolderList = new ArrayList<>();
     ApiTimeApp apiTimeApp;
@@ -44,12 +45,13 @@ public class LibraryActivity extends Fragment implements SearchableFragment {
         recyclerView = view.findViewById(R.id.recyclerViewFolders);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        folderList = new ArrayList<>();
+        adapter = new FolderAdapter(getContext(), filteredFolderList,null);
 
+        recyclerView.setAdapter(adapter);
         // Thêm folder mẫu
         getFolder();
 
-        adapter = new FolderAdapter(getContext(), folderList, folder -> {
+        adapter = new FolderAdapter(getContext(), filteredFolderList, folder -> {
             // Xử lý khi click vào folder
             hideSearchBar();
             TaskFragment taskFragment = TaskFragment.newInstance(folder.getName_folder(), folder.getId());
@@ -81,7 +83,8 @@ public class LibraryActivity extends Fragment implements SearchableFragment {
                             if (folderModel.isSuccess()) {
                                 folderList.clear();
                                 folderList.addAll(folderModel.getResult());
-                                filter("");
+                                filteredFolderList.clear();
+                                filteredFolderList.addAll(folderList);
                                 adapter.notifyDataSetChanged();
                             } else {
                                 Toast.makeText(requireContext(),folderModel.getMessage(), Toast.LENGTH_SHORT).show();

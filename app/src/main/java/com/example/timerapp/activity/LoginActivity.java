@@ -176,11 +176,6 @@ public class LoginActivity extends AppCompatActivity {
         txtLogin = findViewById(R.id.txtLogin);
         edtEmail=findViewById(R.id.edtEmail);
         txtForgot = findViewById(R.id.txtForgotPassword);
-
-        if(Paper.book().read("email")!=null &&Paper.book().read("pass")!=null){
-            edtEmail.setText(Paper.book().read("email"));
-            edtPassword.setText(Paper.book().read("pass"));
-        }
     }
 
     @Override

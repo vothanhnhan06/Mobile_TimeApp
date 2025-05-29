@@ -31,9 +31,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class FavoriteActivity extends Fragment implements SearchableFragment {
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
-    private List<Task> taskList;
+    private List<Task> taskList=new ArrayList<>();
     ApiTimeApp apiTimeApp;
-    private List<Task> filteredTaskList;
+    private List<Task> filteredTaskList = new ArrayList<>();
     CompositeDisposable compositeDisposable=new CompositeDisposable();
 
     @SuppressLint({"NotifyDataSetChanged", "MissingInflatedId"})
@@ -41,13 +41,9 @@ public class FavoriteActivity extends Fragment implements SearchableFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_favourite, container, false);
         apiTimeApp = RetrofitClient.getInstance(Utils.BASE_URL).create(ApiTimeApp.class);
-
         recyclerView = view.findViewById(R.id.recyclerViewFavorite);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        taskList=new ArrayList<>();
-        filteredTaskList = new ArrayList<>();
-        taskAdapter = new TaskAdapter(getContext(), taskList);
+        taskAdapter = new TaskAdapter(getContext(), filteredTaskList);
         recyclerView.setAdapter(taskAdapter);
         getTask();
         return view;
