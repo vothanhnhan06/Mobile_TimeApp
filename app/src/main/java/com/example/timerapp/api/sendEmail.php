@@ -88,6 +88,7 @@ if (isset($_POST['email']) && isset($_POST['code'])) {
                 ];
             }
         }
+
     }
 } else {
     $arr = [
