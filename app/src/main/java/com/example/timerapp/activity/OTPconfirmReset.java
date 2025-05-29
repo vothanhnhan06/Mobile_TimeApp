@@ -78,7 +78,7 @@ public class OTPconfirmReset extends AppCompatActivity {
     }
 
     private void checkCode(String email,String str_otp) {
-        compositeDisposable.add(apiTimeApp.checkOTP(email,str_otp)
+        compositeDisposable.add(apiTimeApp.checkOTP(email,str_otp,"")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

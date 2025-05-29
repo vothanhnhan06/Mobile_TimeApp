@@ -435,14 +435,11 @@ public class MainActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(folderModel -> {
                     if (folderModel.isSuccess() && folderModel.getResult() != null) {
-                        Toast.makeText(MainActivity.this, folderModel.getMessage(), Toast.LENGTH_SHORT).show();
                         callback.onSuccess(folderModel.getResult());
                     } else {
-                        Toast.makeText(MainActivity.this, folderModel.getMessage(), Toast.LENGTH_SHORT).show();
                         callback.onError(folderModel.getMessage());
                     }
                 }, throwable -> {
-                    Toast.makeText(MainActivity.this, "Lỗi: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     callback.onError(throwable.getMessage());
                 }));
     }

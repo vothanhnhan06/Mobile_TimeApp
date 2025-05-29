@@ -37,7 +37,8 @@ public interface ApiTimeApp {
     @POST("checkOTP.php")
     Single<UserModel> checkOTP(
             @Field("email") String email,
-            @Field("code") String code
+            @Field("code") String code,
+            @Field("type") String type
     );
 
     @FormUrlEncoded
